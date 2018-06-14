@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.garden.SettingsActivity">
+
+    <include layout="@layout/include_tool_bar" />
+
+    <LinearLayout
+        android:id="@+id/ll_time_version"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_label"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="@string/current_version"
+            android:textColor="@color/gray_66"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_version_result"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical|end"
+            android:text="v1.0.0.0"
+            android:textColor="@color/gray_99"
+            android:textSize="13sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_notify"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_label"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="@string/open_notify_permission"
+            android:textColor="@color/gray_66"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_notify_tip"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical|end"
+            android:text="开启后可在通知栏上查看闹钟"
+            android:textColor="@color/text_green"
+            android:textSize="12sp" />
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/sc_notify"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_time_format"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/bg_label"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="@string/time_format_24"
+            android:textColor="@color/gray_66"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_time_format_result"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical|end"
+            android:text="此选项会应用于app中所有时间的显示"
+            android:textColor="@color/gray_99"
+            android:textSize="12sp" />
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/sc_time_format"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp" />
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#63d6a6</color>
+    <color name="colorPrimaryDark">#54b98f</color>
+    <color name="colorAccent">#fce169</color>
+    <color name="gray_f0">#F0F0F0</color>
+    <color name="translation">#00000000</color>
+    <color name="bg_selector">#bdffe3</color>
+
+
+    <color name="text_green">#26a92a</color>
+    <color name="text_blue">#4FA1D8</color>
+    <color name="theme_blue">#4d9ae1</color>
+    <color name="theme_blue_dark">#2376c2</color>
+    <color name="theme_color">#e33e33</color>
+    <color name="theme_color_dark">#e33e33</color>
+    <color name="theme_color_light">#fc7067</color>
+    <color name="theme_color_white">#EC7E77</color>
+    <color name="red">#FF0000</color>
+    <color name="theme_orange">#FF6706</color>
+    <color name="gray_33">#333333</color>
+    <color name="gray_66">#666666</color>
+    <color name="gray_8a">#8a8a8a</color>
+    <color name="gray_92">#929292</color>
+    <color name="gray_99">#999999</color>
+    <color name="gray_aa">#aaaaaa</color>
+    <color name="gray_ab">#ababab</color>
+    <color name="gray_bd">#bdbdbd</color>
+    <color name="gray_cd">#cdcdcd</color>
+    <color name="gray_d2">#d2d2d2</color>
+    <color name="gray_db">#dbdbdb</color>
+    <color name="gray_ee">#eeeeee</color>
+    <color name="gray_f1">#f1f1f1</color>
+    <color name="gray_f4">#f4f4f4</color>
+    <color name="gray_f5">#f5f5f5</color>
+    <color name="gray_f7">#F7F7F7</color>
+    <color name="gray_f8">#f8f8f8</color>
+    <color name="gray_fb">#fbfbfb</color>
+    <color name="white">#FFFFFF</color>
+    <color name="white_55">#55FFFFFF</color>
+    <color name="white_99">#99FFFFFF</color>
+    <color name="white_ef">#EFFFFFFF</color>
+    <color name="transparent">#00000000</color>
+    <color name="transparent_11">#11000000</color>
+    <color name="transparent_22">#22000000</color>
+    <color name="transparent_55">#55000000</color>
+    <color name="transparent_70">#70000000</color>
+    <color name="transparent_90">#90000000</color>
+    <color name="transparent_aa">#aa000000</color>
+    <color name="btn_red_right">#DF3F38</color>
+    <color name="btn_red_left">#F8A29F</color>
+    <color name="btn_red_left_dark">#f8736e</color>
+
+</resources>

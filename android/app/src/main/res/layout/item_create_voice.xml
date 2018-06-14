@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_content"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_label"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/iv_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:contentDescription="@null"
+        android:src="@mipmap/ic_pause"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:text="一个像秋天一个像夏天"
+        android:textColor="@color/gray_33" />
+
+    <com.sunn.xhui.crazyalarm.ui.widget.ProgressButton
+        android:id="@+id/btn_voice"
+        android:layout_width="65dp"
+        android:layout_height="30dp"
+        app:btnbackground="@color/gray_bd"
+        app:btnforeground="@color/colorPrimary"
+        app:btnprogress="100"
+        app:btntext="下载中..."
+        app:btntextSize="12sp"
+        app:btntextcolor="@color/white" />
+
+</LinearLayout>
