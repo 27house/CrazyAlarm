@@ -1,16 +1,16 @@
 package com.sunn.crazy.service;
 
+import com.sunn.crazy.bean.Dynamic;
 import com.sunn.crazy.bean.MusicBean;
 import com.sunn.crazy.bean.TaskBean;
 import com.sunn.crazy.bean.UserBean;
+import com.sunn.crazy.utils.TextUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.*;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.Date;
-import java.util.List;
-import java.util.Random;
 
 public class DBService {
     // 数据库的用户名与密码，需要根据自己的设置
@@ -59,7 +59,53 @@ public class DBService {
                 userBean.setAvatar(rs.getString("avatar"));
                 userBean.setCreate_time(rs.getString("create_time"));
                 userBean.setLogin_time(rs.getString("login_time"));
-                userBean.setDescribe(rs.getString("describe"));
+                userBean.setMotto(rs.getString("motto"));
+                userBean.setSex(rs.getString("sex"));
+            }
+
+            // 完成后关闭
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // 最后是用于关闭资源的块
+            try {
+                if (stmt != null)
+                    stmt.close();
+            } catch (SQLException se2) {
+                se2.printStackTrace();
+            }
+            try {
+                if (conn != null)
+                    conn.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+        return userBean;
+    }
+
+    public UserBean getUserBean(int userId) {
+
+        // 执行 SQL 查询
+        Statement stmt = null;
+        UserBean userBean = null;
+        try {
+            stmt = conn.createStatement();
+            String sql;
+
+            sql = "select * from user_info where id = '" + userId + "'";
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                // 通过字段检索
+                userBean = new UserBean();
+                userBean.setId(rs.getLong("id"));
+                userBean.setAccount(rs.getString("account"));
+                userBean.setNickname(rs.getString("nickname"));
+                userBean.setAvatar(rs.getString("avatar"));
+                userBean.setMotto(rs.getString("motto"));
                 userBean.setSex(rs.getString("sex"));
             }
 
@@ -129,6 +175,7 @@ public class DBService {
         try {
             stmt = conn.createStatement();
             String sql = "update user_info set " + key + " = '" + value + "' where account = '" + account + "' ";
+            System.out.println(sql);
             stmt.executeUpdate(sql);
             rs = true;
             // 完成后关闭
@@ -170,7 +217,7 @@ public class DBService {
                 MusicBean bean = new MusicBean();
                 bean.setId(rs.getInt("id"));
                 bean.setTitle(rs.getString("title"));
-                bean.setDesc(rs.getString("desc"));
+                bean.setDesc(rs.getString("motto"));
                 bean.setUrl("http://192.168.0.136/admin/upload/music/" + rs.getString("url"));
                 bean.setDownload_count(rs.getInt("download_count"));
                 bean.setStatus(rs.getInt("status"));
@@ -274,5 +321,71 @@ public class DBService {
             }
         }
         return rs;
+    }
+
+    public List<Dynamic> getDynamicList(int page, int page_count) {
+        List<Dynamic> list = new ArrayList<>();
+        // 执行 SQL 查询
+        Statement stmt = null;
+        try {
+            stmt = conn.createStatement();
+            String sql;
+            int start = page * page_count;
+            int end = start + page_count;
+            sql = "SELECT dynamic . * , user_info.account, user_info.nickname, user_info.avatar, user_info.sex, user_info.motto" +
+                    " FROM dynamic " +
+                    " INNER JOIN user_info ON dynamic.userId = user_info.id" +
+                    " ORDER BY dynamic.create_time desc,dynamic.id asc " +
+                    " LIMIT " + start + " , " + end + "";
+            System.out.println(sql);
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                // 通过字段检索
+                Dynamic bean = new Dynamic();
+                bean.setId(rs.getInt("id"));
+                int userId = rs.getInt("userId");
+                UserBean userBean = new UserBean();
+                userBean.setId(userId);
+                userBean.setAccount(rs.getString("account"));
+                userBean.setNickname(rs.getString("nickname"));
+                userBean.setMotto(rs.getString("motto"));
+                userBean.setAvatar(rs.getString("avatar"));
+                userBean.setSex(rs.getString("sex"));
+                bean.setUser(userBean);
+                bean.setContent(rs.getString("content"));
+                bean.setCreate_time(rs.getString("create_time"));
+                bean.setCommentCount(rs.getInt("commentCount"));
+                String pics = rs.getString("pics");
+                if (TextUtils.isEmpty(pics)) {
+                    bean.setPics(new ArrayList<>());
+                } else {
+                    String[] picArr = pics.split(",");
+                    bean.setPics(new ArrayList<>(Arrays.asList(picArr)));
+                }
+                bean.setLikeCount(rs.getInt("likeCount"));
+                list.add(bean);
+            }
+            // 完成后关闭
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // 最后是用于关闭资源的块
+            try {
+                if (stmt != null)
+                    stmt.close();
+            } catch (SQLException se2) {
+                se2.printStackTrace();
+            }
+            try {
+                if (conn != null)
+                    conn.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+        return list;
     }
 }

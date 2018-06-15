@@ -4,23 +4,21 @@ import java.io.Serializable;
 import java.util.List;
 
 public class Dynamic {
-
     private int id;
-    private int userId;
+    private UserBean user;
     private String content;
     private List<String> pics;
     private String create_time;
 
     private int commentCount;
     private int likeCount;
-    private String like_u_id;
 
-    public String getLike_u_id() {
-        return like_u_id;
+    public UserBean getUser() {
+        return user;
     }
 
-    public void setLike_u_id(String like_u_id) {
-        this.like_u_id = like_u_id;
+    public void setUser(UserBean user) {
+        this.user = user;
     }
 
     public int getLikeCount() {
@@ -37,14 +35,6 @@ public class Dynamic {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 
     public String getContent() {

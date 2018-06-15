@@ -240,7 +240,7 @@ public class EditInfoActivity extends AppCompatActivity implements UserContract.
 		if (AlarmApp.userInfo == null) {
 			return;
 		}
-		tvDecs.setText(AlarmApp.userInfo.getDescribe());
+		tvDecs.setText(AlarmApp.userInfo.getMotto());
 		tvAccount.setText("账号：" + AlarmApp.userInfo.getAccount());
 		tvNickname.setText("昵称：" + AlarmApp.userInfo.getNickname());
 		tvSex.setText(getSexStr(Integer.parseInt(AlarmApp.userInfo.getSex())));

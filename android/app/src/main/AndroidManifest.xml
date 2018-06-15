@@ -52,7 +52,7 @@
         <activity
             android:name=".ui.garden.EditInfoActivity"
             android:label="@string/title_activity_edit_info"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -63,6 +63,11 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
+
+        <activity
+            android:name=".ui.community.AddDynamicActivity"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden|stateUnchanged"  />
     </application>
 
 </manifest>

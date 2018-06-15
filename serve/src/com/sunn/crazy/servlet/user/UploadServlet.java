@@ -38,7 +38,7 @@ public class UploadServlet extends HttpServlet {
                 tagDirFile.mkdir();
             }
             //避免文件名重复使用uuid来避免,产生一个随机的uuid字符
-            String realFileName = UUID.randomUUID().toString();
+            String realFileName = UUID.randomUUID().toString() + ".jpg";
             OutputStream output = new FileOutputStream(new File(tagDir, realFileName));
             int len = 0;
             byte[] buff = new byte[1024 * 8];

@@ -2,6 +2,7 @@ package com.sunn.xhui.crazyalarm;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.DisplayMetrics;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.sunn.xhui.crazyalarm.data.UserInfo;
@@ -18,6 +19,8 @@ public class AlarmApp extends Application {
 	private static Application app;
 	public static String HttpCachePath;
 
+	private static int screenW = 0;
+	private static int screenH = 0;
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -52,5 +55,33 @@ public class AlarmApp extends Application {
 		} else {
 			SharedPreHelper.getInstance(getContext()).put(Constant.SPF_USER_ACC, "");
 		}
+	}
+
+	/**
+	 * 获取屏幕高度
+	 *
+	 * @param aty Context
+	 * @return H
+	 */
+	public static int getScreenH(Context aty) {
+		if (aty != null){
+			DisplayMetrics dm = aty.getResources().getDisplayMetrics();
+			screenH = dm.heightPixels;
+		}
+		return screenH;
+	}
+
+	/**
+	 * 获取屏幕宽度
+	 *
+	 * @param aty Context
+	 * @return W
+	 */
+	public static int getScreenW(Context aty) {
+		if (aty != null){
+			DisplayMetrics dm = aty.getResources().getDisplayMetrics();
+			screenW = dm.widthPixels;
+		}
+		return screenW;
 	}
 }

@@ -20,7 +20,7 @@ public class UserInfo {
 	private String password;
 	private String create_time;
 	private String login_time;
-	private String describe;
+	private String motto;
 
 	public String getSex() {
 		return sex;
@@ -86,11 +86,11 @@ public class UserInfo {
 		this.login_time = login_time;
 	}
 
-	public String getDescribe() {
-		return describe;
+	public String getMotto() {
+		return motto;
 	}
 
-	public void setDescribe(String describe) {
-		this.describe = describe;
+	public void setMotto(String motto) {
+		this.motto = motto;
 	}
 }

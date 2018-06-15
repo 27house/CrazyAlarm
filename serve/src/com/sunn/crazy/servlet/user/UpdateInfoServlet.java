@@ -39,7 +39,7 @@ public class UpdateInfoServlet extends HttpServlet {
                     key = "password";
                     break;
                 case "3":
-                    key = "describe";
+                    key = "motto";
                     break;
                 default:
                     key = "nickname";

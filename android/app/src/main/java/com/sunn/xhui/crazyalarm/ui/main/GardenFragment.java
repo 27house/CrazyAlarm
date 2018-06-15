@@ -79,7 +79,7 @@ public class GardenFragment extends BaseFragment implements UserContract.UserVie
 			} else {
 				tvNickname.setCompoundDrawables(null, null, null, null);
 			}
-			tvDesc.setText(AlarmApp.userInfo.getDescribe());
+			tvDesc.setText(AlarmApp.userInfo.getMotto());
 		} else {
 			tvNickname.setText("");
 			tvNickname.setCompoundDrawables(null, null, null, null);

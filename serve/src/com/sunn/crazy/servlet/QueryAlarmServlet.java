@@ -26,20 +26,20 @@ public class QueryAlarmServlet extends HttpServlet {
         switch (type) {
             case "ringtone":
                 List<MusicBean> musicList = DBService.getService().getMusicList();
-                jsonObject.put("result", Constant.SUCCESS);
-                jsonObject.put("datas", musicList);
-                jsonObject.put("message", "");
+                jsonObject.put(Constant.KEY_RESULT, Constant.SUCCESS);
+                jsonObject.put(Constant.KEY_LIST, musicList);
+                jsonObject.put(Constant.KEY_MESSAGE, "");
                 break;
             case "task":
                 List<TaskBean> taskList = DBService.getService().getTaskList();
-                jsonObject.put("result", Constant.SUCCESS);
-                jsonObject.put("datas", taskList);
-                jsonObject.put("message", "");
+                jsonObject.put(Constant.KEY_RESULT, Constant.SUCCESS);
+                jsonObject.put(Constant.KEY_LIST, taskList);
+                jsonObject.put(Constant.KEY_MESSAGE, "");
                 break;
             default:
-                jsonObject.put("result", Constant.Error.ERROR_NULL_PARAM);
-                jsonObject.put("datas", null);
-                jsonObject.put("message", "没有这个类型！");
+                jsonObject.put(Constant.KEY_RESULT, Constant.Error.ERROR_NULL_PARAM);
+                jsonObject.put(Constant.KEY_LIST, null);
+                jsonObject.put(Constant.KEY_MESSAGE, "没有这个类型！");
                 break;
         }
         resp.setCharacterEncoding("UTF-8");

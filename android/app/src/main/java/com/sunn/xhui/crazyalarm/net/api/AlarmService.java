@@ -1,6 +1,7 @@
 package com.sunn.xhui.crazyalarm.net.api;
 
 import com.sunn.xhui.crazyalarm.net.resp.BaseResp;
+import com.sunn.xhui.crazyalarm.net.resp.DynamicListResp;
 import com.sunn.xhui.crazyalarm.net.resp.LoginResp;
 import com.sunn.xhui.crazyalarm.net.resp.TaskListResp;
 import com.sunn.xhui.crazyalarm.net.resp.VoiceListResp;
@@ -48,6 +49,9 @@ public interface AlarmService {
 
 	@GET
 	Observable<ResponseBody> downloadFile(@Url String fileUrl);
+
+	@GET("dynamic?type=getList")
+	Observable<DynamicListResp> getDynamicList(@Query("page") int page, @Query("page_count") int page_count);
 
 
 }

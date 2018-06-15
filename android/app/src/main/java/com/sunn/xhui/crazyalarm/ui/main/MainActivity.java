@@ -4,10 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.sunn.xhui.crazyalarm.R;
@@ -24,6 +27,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 首页
@@ -39,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
 	BottomNavigationView navigation;
 	@BindView(R.id.container)
 	LinearLayout container;
+	@BindView(R.id.iv_send)
+	ImageView ivSend;
 	private List<Fragment> listFragment = new ArrayList<>();
 	private int currentPage;
 	private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -48,12 +54,15 @@ public class MainActivity extends AppCompatActivity {
 		public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 			switch (item.getItemId()) {
 				case R.id.navigation_home:
+					ivSend.setVisibility(View.GONE);
 					gotoPage(0);
 					return true;
 				case R.id.navigation_dashboard:
+					ivSend.setVisibility(View.VISIBLE);
 					gotoPage(1);
 					return true;
 				case R.id.navigation_notifications:
+					ivSend.setVisibility(View.GONE);
 					gotoPage(2);
 					return true;
 				default:
@@ -87,6 +96,14 @@ public class MainActivity extends AppCompatActivity {
 			} catch (Exception e) {
 				LogUtil.e(e.getMessage());
 			}
+		}
+	}
+
+	@OnClick(R.id.iv_send)
+	public void clickSend(View view) {
+		CommunityFragment fragment = (CommunityFragment) listFragment.get(1);
+		if (fragment != null) {
+			fragment.addDynamic();
 		}
 	}
 

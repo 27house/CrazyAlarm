@@ -148,5 +148,9 @@
     <string name="action_settings">Settings</string>
     <string name="garden">家园</string>
     <string name="title_activity_edit_info">EditInfoActivity</string>
+    <string name="add_dynamic">发帖</string>
+    <string name="send">发送</string>
+    <string name="hint_dyanmic">说点什么吧...</string>
+    <string name="click_upload">点击重新上传</string>
 
 </resources>
