@@ -7,16 +7,19 @@ import com.sunn.xhui.crazyalarm.net.resp.TaskListResp;
 import com.sunn.xhui.crazyalarm.net.resp.VoiceListResp;
 
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 import rx.Observable;
@@ -53,5 +56,7 @@ public interface AlarmService {
 	@GET("dynamic?type=getList")
 	Observable<DynamicListResp> getDynamicList(@Query("page") int page, @Query("page_count") int page_count);
 
-
+	@Multipart
+	@POST("dynamic")
+	Observable<BaseResp> addDynamic(@Part() List<MultipartBody.Part> parts, @Part("type") RequestBody type, @Part("account") RequestBody account, @Part("content") RequestBody content);
 }

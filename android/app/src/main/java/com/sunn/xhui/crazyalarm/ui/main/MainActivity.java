@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 
 import com.sunn.xhui.crazyalarm.R;
 import com.sunn.xhui.crazyalarm.event.RefreshAlarmListEvent;
+import com.sunn.xhui.crazyalarm.event.RefreshDynamicListEvent;
 import com.sunn.xhui.crazyalarm.ui.adapter.MainFragmentAdapter;
 import com.sunn.xhui.crazyalarm.ui.community.CommunityFragment;
 import com.sunn.xhui.crazyalarm.utils.LogUtil;
@@ -127,6 +128,14 @@ public class MainActivity extends AppCompatActivity {
 			if (fragment != null) {
 				fragment.refreshData();
 			}
+		}
+	}
+
+	@Subscribe
+	public void onEventMainThread(RefreshDynamicListEvent event) {
+		CommunityFragment fragment = (CommunityFragment) listFragment.get(1);
+		if (fragment != null) {
+			fragment.refreshData();
 		}
 	}
 }

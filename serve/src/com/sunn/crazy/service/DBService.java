@@ -6,7 +6,11 @@ import com.sunn.crazy.bean.TaskBean;
 import com.sunn.crazy.bean.UserBean;
 import com.sunn.crazy.utils.TextUtils;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
+import java.io.*;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -288,15 +292,26 @@ public class DBService {
         return list;
     }
 
-    public boolean putDynamic(long id, HttpServletRequest req) {
+    public boolean putDynamic(long id, HttpServletRequest req, HttpServlet servlet) {
         // 执行 SQL 查询
         Statement stmt = null;
         boolean rs;
         try {
             stmt = conn.createStatement();
             String create_time = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date());
+            String pics = "";
+            List<Part> partList = (List<Part>) req.getParts();
+            for (Part part : partList) {
+                if (part.getName().equals("file")){
+                    String showFile = DBService.getService().saveFile(req, part, servlet);
+                    pics = pics + showFile + ",";
+                }
+            }
+            if (!TextUtils.isEmpty(pics)) {
+                pics = pics.substring(0, pics.length() - 1);
+            }
             String sql = "INSERT INTO `crazy`.`dynamic` (`userId`, `content`, `create_time`,  `pics`) " +
-                    "VALUES (" + id + ", '" + req.getParameter("content") + "', '" + create_time + "', '" + req.getParameter("pics") + "');";
+                    "VALUES (" + id + ", '" + req.getParameter("content") + "', '" + create_time + "', '" + pics + "');";
             stmt.executeUpdate(sql);
             rs = true;
             // 完成后关闭
@@ -387,5 +402,33 @@ public class DBService {
             }
         }
         return list;
+    }
+
+    public String saveFile(HttpServletRequest req, Part part, HttpServlet servlet) throws IOException, ServletException {
+        String inputName = part.getName();
+        InputStream input = part.getInputStream();
+        //想要保存的目标文件的目录下
+        String tagDir = servlet.getServletContext().getRealPath("/upload");
+        File tagDirFile = new File(tagDir);
+        //判断上传文件的保存目录是否存在
+        if (!tagDirFile.exists() && !tagDirFile.isDirectory()) {
+            System.out.println(tagDir + "目录不存在，需要创建");
+            //创建目录
+            tagDirFile.mkdir();
+        }
+        //避免文件名重复使用uuid来避免,产生一个随机的uuid字符
+        String realFileName = UUID.randomUUID().toString() + ".jpg";
+        OutputStream output = new FileOutputStream(new File(tagDir, realFileName));
+        int len = 0;
+        byte[] buff = new byte[1024 * 8];
+        while ((len = input.read(buff)) > -1) {
+            output.write(buff, 0, len);
+        }
+        input.close();
+        output.close();
+        String path = tagDir + "/" + realFileName;
+        String basePath = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + req.getContextPath() + "/";
+        String showFile = basePath + "/upload/" + realFileName;
+        return showFile;
     }
 }

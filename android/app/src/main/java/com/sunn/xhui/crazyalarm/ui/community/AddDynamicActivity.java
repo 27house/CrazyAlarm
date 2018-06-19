@@ -1,12 +1,16 @@
 package com.sunn.xhui.crazyalarm.ui.community;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -15,16 +19,24 @@ import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.sunn.xhui.crazyalarm.R;
 import com.sunn.xhui.crazyalarm.data.SelectImg;
+import com.sunn.xhui.crazyalarm.event.RefreshAlarmListEvent;
+import com.sunn.xhui.crazyalarm.event.RefreshDynamicListEvent;
+import com.sunn.xhui.crazyalarm.mpv.contract.DynamicContract;
+import com.sunn.xhui.crazyalarm.mpv.presenter.DynamicPresenter;
+import com.sunn.xhui.crazyalarm.net.req.AddDynamicReq;
 import com.sunn.xhui.crazyalarm.ui.adapter.AddImageGridAdapter;
 import com.sunn.xhui.crazyalarm.ui.widget.list.SpacesItemDecoration;
 import com.sunn.xhui.crazyalarm.utils.DensityUtil;
 import com.sunn.xhui.crazyalarm.utils.PicSelectUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -36,7 +48,7 @@ import rx.schedulers.Schedulers;
  * created at 2018/6/15 0015  15:40
  */
 
-public class AddDynamicActivity extends AppCompatActivity implements AddImageGridAdapter.ClickCallback {
+public class AddDynamicActivity extends AppCompatActivity implements AddImageGridAdapter.ClickCallback, DynamicContract.AddView {
 
 	@BindView(R.id.tv_cancel)
 	TextView tvCancel;
@@ -47,6 +59,7 @@ public class AddDynamicActivity extends AppCompatActivity implements AddImageGri
 	@BindView(R.id.rv_pic)
 	RecyclerView rvPic;
 	private AddImageGridAdapter gridAdapter;
+	private DynamicPresenter presenter;
 
 	private List<SelectImg> imgList = new ArrayList<>();
 
@@ -55,7 +68,7 @@ public class AddDynamicActivity extends AppCompatActivity implements AddImageGri
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_dynamic);
 		ButterKnife.bind(this);
-
+		presenter = new DynamicPresenter(this);
 		gridAdapter = new AddImageGridAdapter(this, this);
 		gridAdapter.setLoadMore(false);
 		gridAdapter.showFooterV(false);
@@ -66,6 +79,37 @@ public class AddDynamicActivity extends AppCompatActivity implements AddImageGri
 		int topBottom = DensityUtil.dip2px(this, 8);
 		rvPic.addItemDecoration(new SpacesItemDecoration(leftRight, topBottom));
 		rvPic.setAdapter(gridAdapter);
+	}
+
+	@OnClick(R.id.tv_cancel)
+	public void clickCancel(View view) {
+		new AlertDialog.Builder(this)
+				.setTitle("提示")
+				.setMessage("退出后不会保存，是否确定退出？")
+				.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						finish();
+					}
+				})
+				.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				}).create().show();
+	}
+
+	@OnClick(R.id.tv_send)
+	public void clickSend(View view) {
+		AddDynamicReq req = new AddDynamicReq();
+		req.setContent(etContent.getText().toString());
+		List<String> picPaths = new ArrayList<>();
+		for (LocalMedia media : selectList) {
+			picPaths.add(media.getPath());
+		}
+		req.setPicPaths(picPaths);
+		presenter.addDynamic(req);
 	}
 
 	private List<LocalMedia> selectList;
@@ -139,6 +183,24 @@ public class AddDynamicActivity extends AppCompatActivity implements AddImageGri
 							imgList.add(feedbackImg);
 						}
 					});
+		}
+	}
+
+	@Override
+	public void showTip(String tip) {
+		Snackbar.make(tvCancel, tip, Snackbar.LENGTH_SHORT).show();
+	}
+
+	@Override
+	public void dismissLoad() {
+
+	}
+
+	@Override
+	public void returnResult(boolean success) {
+		if (success) {
+			EventBus.getDefault().post(new RefreshDynamicListEvent());
+			finish();
 		}
 	}
 }

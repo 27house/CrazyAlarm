@@ -21,35 +21,15 @@ import java.util.UUID;
 public class UploadServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+    }
+
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         String account = req.getParameter("account");
-        Part part = req.getPart("file");
         JSONObject jsonObject = new JSONObject();
         if (!TextUtils.isEmpty(account)) {
-            String inputName = part.getName();
-            InputStream input = part.getInputStream();
-            //想要保存的目标文件的目录下
-            String tagDir = getServletContext().getRealPath("/upload");
-            File tagDirFile = new File(tagDir);
-            //判断上传文件的保存目录是否存在
-            if (!tagDirFile.exists() && !tagDirFile.isDirectory()) {
-                System.out.println(tagDir + "目录不存在，需要创建");
-                //创建目录
-                tagDirFile.mkdir();
-            }
-            //避免文件名重复使用uuid来避免,产生一个随机的uuid字符
-            String realFileName = UUID.randomUUID().toString() + ".jpg";
-            OutputStream output = new FileOutputStream(new File(tagDir, realFileName));
-            int len = 0;
-            byte[] buff = new byte[1024 * 8];
-            while ((len = input.read(buff)) > -1) {
-                output.write(buff, 0, len);
-            }
-            input.close();
-            output.close();
-            String path = tagDir + "/" + realFileName;
-            String basePath = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + req.getContextPath() + "/";
-            String showFile = basePath + "/upload/" + realFileName;
+            String showFile = DBService.getService().saveFile(req, req.getPart("file"), this);
             boolean result = DBService.getService().updateUser(account, "avatar", showFile);
             if (result) {
                 jsonObject.put("result", Constant.SUCCESS);
@@ -57,8 +37,8 @@ public class UploadServlet extends HttpServlet {
             } else {
                 jsonObject.put("result", Constant.Error.ERROR_DB);
                 jsonObject.put("message", Constant.Msg.ERROR_UPLOAD);
-                File file = new File(path);
-                file.delete();
+//                File file = new File(path);
+//                file.delete();
             }
         } else {
             jsonObject.put("result", Constant.Error.ERROR_NULL_PARAM);
@@ -66,9 +46,5 @@ public class UploadServlet extends HttpServlet {
         }
         resp.setCharacterEncoding("utf-8");
         resp.getWriter().print(jsonObject.toString());
-    }
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
     }
 }

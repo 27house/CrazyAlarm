@@ -8,6 +8,7 @@ import com.sunn.crazy.utils.TextUtils;
 import net.sf.json.JSONObject;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,20 +17,22 @@ import java.io.IOException;
 import java.util.List;
 
 @WebServlet("/dynamic")
+@MultipartConfig
 public class DynamicServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 //        super.doPost(req, resp);
+        req.setCharacterEncoding("UTF-8");
         String type = req.getParameter("type");
         String account = req.getParameter("account");
         JSONObject jsonObject = new JSONObject();
         if (!TextUtils.isEmpty(account)) {
-            UserBean user = DBService.getService().getUserBean(req.getParameter("account"));
+            UserBean user = DBService.getService().getUserBean(account);
             if (user != null) {
                 switch (type) {
                     case "add_dynamic":
-                        boolean success = DBService.getService().putDynamic(user.getId(), req);
+                        boolean success = DBService.getService().putDynamic(user.getId(), req, this);
                         if (success) {
                             jsonObject.put(Constant.KEY_RESULT, Constant.SUCCESS);
                             jsonObject.put(Constant.KEY_MESSAGE, "发布成功！");

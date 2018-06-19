@@ -120,4 +120,9 @@ public class CommunityFragment extends BaseFragment implements DynamicContract.L
 	public void onRefresh() {
 		presenter.getDynamicList(0,30);
 	}
+
+	public void refreshData() {
+		swipeRefreshLayout.setRefreshing(true);
+		presenter.getDynamicList(0,30);
+	}
 }

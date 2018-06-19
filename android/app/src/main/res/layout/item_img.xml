@@ -2,7 +2,6 @@
 <com.sunn.xhui.crazyalarm.ui.widget.SquareRelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:padding="1dp"
     android:layout_height="wrap_content">
 
     <com.facebook.drawee.view.SimpleDraweeView
