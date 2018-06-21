@@ -54,9 +54,21 @@ public interface AlarmService {
 	Observable<ResponseBody> downloadFile(@Url String fileUrl);
 
 	@GET("dynamic?type=getList")
-	Observable<DynamicListResp> getDynamicList(@Query("page") int page, @Query("page_count") int page_count);
+	Observable<DynamicListResp> getDynamicList(@Query("page") int page, @Query("page_count") int page_count, @Query("account") String account);
 
 	@Multipart
 	@POST("dynamic")
 	Observable<BaseResp> addDynamic(@Part() List<MultipartBody.Part> parts, @Part("type") RequestBody type, @Part("account") RequestBody account, @Part("content") RequestBody content);
+
+	@FormUrlEncoded
+	@POST("dynamic?type=add_like")
+	Observable<BaseResp> addDynamicLike(@Field("account") String account, @Field("d_id") int dId, @Field("c_id") int cId);
+
+	@FormUrlEncoded
+	@POST("dynamic?type=delete_like")
+	Observable<BaseResp> removeDynamicLike(@Field("account") String account, @Field("d_id") int dId, @Field("c_id") int cId);
+
+	@FormUrlEncoded
+	@POST("dynamic?type=delete_dynamic")
+	Observable<BaseResp> deleteDynamic(@Field("account") String account, @Field("d_id") int dId, @Field("c_id") int cId);
 }

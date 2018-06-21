@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -17,7 +16,6 @@ import com.sunn.xhui.crazyalarm.R;
 import com.sunn.xhui.crazyalarm.event.RefreshAlarmListEvent;
 import com.sunn.xhui.crazyalarm.event.RefreshDynamicListEvent;
 import com.sunn.xhui.crazyalarm.ui.adapter.MainFragmentAdapter;
-import com.sunn.xhui.crazyalarm.ui.community.CommunityFragment;
 import com.sunn.xhui.crazyalarm.utils.LogUtil;
 
 import org.greenrobot.eventbus.EventBus;

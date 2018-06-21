@@ -68,4 +68,14 @@ public class Dynamic {
     public void setCommentCount(int commentCount) {
         this.commentCount = commentCount;
     }
+
+    private int isLike;
+
+    public int getIsLike() {
+        return isLike;
+    }
+
+    public void setIsLike(int isLike) {
+        this.isLike = isLike;
+    }
 }

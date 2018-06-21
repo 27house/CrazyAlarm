@@ -40,8 +40,18 @@ import butterknife.OnClick;
  */
 
 public class DynamicListAdapter extends BaseRecycleAdapter {
-	public DynamicListAdapter(Context context) {
+
+	private List<Dynamic> list;
+	private ItemClick itemClick;
+
+	public DynamicListAdapter(Context context, ItemClick itemClick) {
 		super(context);
+		this.itemClick = itemClick;
+	}
+
+	@Override
+	public List<Dynamic> getDataList() {
+		return list;
 	}
 
 	@NonNull
@@ -55,6 +65,7 @@ public class DynamicListAdapter extends BaseRecycleAdapter {
 	}
 
 	public void setDynamicList(List<Dynamic> list) {
+		this.list = list;
 		setDataList(list);
 	}
 
@@ -100,6 +111,7 @@ public class DynamicListAdapter extends BaseRecycleAdapter {
 		@OnClick(R.id.iv_delete)
 		public void clickDelete(View view) {
 			// 删除
+			itemClick.clickDelete(dynamic.getId());
 		}
 
 		@SuppressLint("SetTextI18n")
@@ -171,18 +183,24 @@ public class DynamicListAdapter extends BaseRecycleAdapter {
 			tvComment.setOnClickListener(clickCommentListener);
 			ivComment.setOnClickListener(clickCommentListener);
 
+			if (dynamic.getIsLike() == 1) {
+				ivLike.setImageResource(R.mipmap.ic_like);
+			} else {
+				ivLike.setImageResource(R.mipmap.ic_like_normal);
+			}
+
 		}
 
 		private View.OnClickListener clickLikeListener = new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
+				itemClick.clickLike(dynamic.getIsLike() == 1, dynamic.getId());
 			}
 		};
 		private View.OnClickListener clickCommentListener = new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
+				itemClick.clickComment(dynamic.getId());
 			}
 		};
 
@@ -207,5 +225,13 @@ public class DynamicListAdapter extends BaseRecycleAdapter {
 
 			}
 		}
+	}
+
+	public interface ItemClick {
+		void clickLike(boolean isLike, int did);
+
+		void clickComment(int did);
+
+		void clickDelete(int did);
 	}
 }

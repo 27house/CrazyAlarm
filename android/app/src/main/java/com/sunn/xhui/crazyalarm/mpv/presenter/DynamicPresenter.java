@@ -1,10 +1,15 @@
 package com.sunn.xhui.crazyalarm.mpv.presenter;
 
+import com.sunn.xhui.crazyalarm.data.Dynamic;
 import com.sunn.xhui.crazyalarm.mpv.contract.DynamicContract;
 import com.sunn.xhui.crazyalarm.mpv.model.DynamicModel;
 import com.sunn.xhui.crazyalarm.net.req.AddDynamicReq;
+import com.sunn.xhui.crazyalarm.net.req.SetDynamicReq;
 import com.sunn.xhui.crazyalarm.net.resp.BaseResp;
 import com.sunn.xhui.crazyalarm.net.resp.DynamicListResp;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import rx.Subscriber;
 
@@ -40,6 +45,12 @@ public class DynamicPresenter extends BasePresenter implements DynamicContract.P
 			@Override
 			public void onNext(DynamicListResp dynamicListResp) {
 				listView.dismissLoad();
+				/*List<Dynamic> newList = new ArrayList<>();
+				for (Dynamic d : dynamicListResp.getList()){
+					for (){
+
+					}
+				}*/
 				listView.returnDynamicList(dynamicListResp.getList());
 				if (dynamicListResp.getResult() != 0) {
 					listView.showTip(dynamicListResp.getMessage());
@@ -70,4 +81,29 @@ public class DynamicPresenter extends BasePresenter implements DynamicContract.P
 			}
 		}));
 	}
+
+	@Override
+	public void setDynamic(final SetDynamicReq req) {
+		addSubscription(model.setDynamic(req).subscribe(new Subscriber<BaseResp>() {
+			@Override
+			public void onCompleted() {
+
+			}
+
+			@Override
+			public void onError(Throwable e) {
+				if (listView != null) {
+					listView.returnSetResult(false, req.getType(), "网络异常！", req.getdId());
+				}
+			}
+
+			@Override
+			public void onNext(BaseResp baseResp) {
+				if (listView != null) {
+					listView.returnSetResult(baseResp.getResult() == 0, req.getType(), baseResp.getMessage(), req.getdId());
+				}
+			}
+		}));
+	}
+
 }

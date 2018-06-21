@@ -21,6 +21,20 @@ public class Dynamic implements Serializable {
 	private int commentCount;
 	private int likeCount;
 	private String create_time;
+	/**
+	 * isLike : 1
+	 * user : {"password":"","create_time":"","login_time":"","sex":"2","nickname":"小丫丫","motto":"花飞花落，缘起缘灭。","avatar":"http://192.168.0.136:8080/crazy//upload/f5e8be1e-6ee9-4765-ab04-bba5a6ea4475.jpg","id":1,"account":"sum@qq.com"}
+	 */
+
+	private int isLike;
+
+	public int getIsLike() {
+		return isLike;
+	}
+
+	public void setIsLike(int isLike) {
+		this.isLike = isLike;
+	}
 
 	public String getCreate_time() {
 		return create_time;

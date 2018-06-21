@@ -46,7 +46,6 @@ public class GardenFragment extends BaseFragment implements UserContract.UserVie
 	TextView llClearCache;
 	@BindView(R.id.btn_exit)
 	Button btnExit;
-	Unbinder unbinder;
 
 	private UserPresenter presenter;
 

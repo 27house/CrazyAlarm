@@ -1,10 +1,8 @@
 package com.sunn.crazy.service;
 
-import com.sunn.crazy.bean.Dynamic;
-import com.sunn.crazy.bean.MusicBean;
-import com.sunn.crazy.bean.TaskBean;
-import com.sunn.crazy.bean.UserBean;
+import com.sunn.crazy.bean.*;
 import com.sunn.crazy.utils.TextUtils;
+import org.omg.DynamicAny.DynAny;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -302,7 +300,7 @@ public class DBService {
             String pics = "";
             List<Part> partList = (List<Part>) req.getParts();
             for (Part part : partList) {
-                if (part.getName().equals("file")){
+                if (part.getName().equals("file")) {
                     String showFile = DBService.getService().saveFile(req, part, servlet);
                     pics = pics + showFile + ",";
                 }
@@ -369,7 +367,6 @@ public class DBService {
                 bean.setUser(userBean);
                 bean.setContent(rs.getString("content"));
                 bean.setCreate_time(rs.getString("create_time"));
-                bean.setCommentCount(rs.getInt("commentCount"));
                 String pics = rs.getString("pics");
                 if (TextUtils.isEmpty(pics)) {
                     bean.setPics(new ArrayList<>());
@@ -377,7 +374,6 @@ public class DBService {
                     String[] picArr = pics.split(",");
                     bean.setPics(new ArrayList<>(Arrays.asList(picArr)));
                 }
-                bean.setLikeCount(rs.getInt("likeCount"));
                 list.add(bean);
             }
             // 完成后关闭
@@ -430,5 +426,307 @@ public class DBService {
         String basePath = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + req.getContextPath() + "/";
         String showFile = basePath + "/upload/" + realFileName;
         return showFile;
+    }
+
+    public boolean putLikeDy(long uId, String dId, String cId) {
+        // 执行 SQL 查询
+        Statement stmt = null;
+        boolean rs;
+        try {
+            stmt = conn.createStatement();
+            String nickname = "用户" + (int) (Math.random() * 9000) + 1000;
+            String sql = "insert into dc_like (userId, dynamicId, commentId) values ('"
+                    + uId + "', '" + dId + "', '" + cId + "')";
+            stmt.executeUpdate(sql);
+            rs = true;
+            // 完成后关闭
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            rs = false;
+        } finally {
+            // 最后是用于关闭资源的块
+            try {
+                if (stmt != null)
+                    stmt.close();
+            } catch (SQLException se2) {
+                se2.printStackTrace();
+            }
+            try {
+                if (conn != null)
+                    conn.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+        return rs;
+    }
+
+    public Dynamic getDynamicDetail(String dId) {
+
+        // 执行 SQL 查询
+        Statement stmt = null;
+        Dynamic bean = null;
+        try {
+            stmt = conn.createStatement();
+            String sql;
+
+            sql = "SELECT dynamic.* , user_info.account, user_info.nickname, user_info.avatar, user_info.sex, user_info.motto" +
+                    " FROM dynamic " +
+                    " INNER JOIN user_info ON dynamic.userId = user_info.id" +
+                    " ORDER BY dynamic.create_time desc,dynamic.id asc " +
+                    " WHERE id = " + dId +
+                    " LIMIT 1";
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                // 通过字段检索
+                bean = new Dynamic();
+                bean.setId(rs.getInt("id"));
+                int userId = rs.getInt("userId");
+                UserBean userBean = new UserBean();
+                userBean.setId(userId);
+                userBean.setAccount(rs.getString("account"));
+                userBean.setNickname(rs.getString("nickname"));
+                userBean.setMotto(rs.getString("motto"));
+                userBean.setAvatar(rs.getString("avatar"));
+                userBean.setSex(rs.getString("sex"));
+                bean.setUser(userBean);
+                bean.setContent(rs.getString("content"));
+                bean.setCreate_time(rs.getString("create_time"));
+                String pics = rs.getString("pics");
+                if (TextUtils.isEmpty(pics)) {
+                    bean.setPics(new ArrayList<>());
+                } else {
+                    String[] picArr = pics.split(",");
+                    bean.setPics(new ArrayList<>(Arrays.asList(picArr)));
+                }
+            }
+
+            // 完成后关闭
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // 最后是用于关闭资源的块
+            try {
+                if (stmt != null)
+                    stmt.close();
+            } catch (SQLException se2) {
+                se2.printStackTrace();
+            }
+            try {
+                if (conn != null)
+                    conn.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+        return bean;
+    }
+
+    public boolean updateDynamic(String dId, String key, String value) {
+        // 执行 SQL 查询
+        Statement stmt = null;
+        boolean rs;
+        try {
+            stmt = conn.createStatement();
+            String sql = "update dynamic set " + key + " = '" + value + "' where id = '" + dId + "' ";
+            System.out.println(sql);
+            stmt.executeUpdate(sql);
+            rs = true;
+            // 完成后关闭
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            rs = false;
+        } finally {
+            // 最后是用于关闭资源的块
+            try {
+                if (stmt != null)
+                    stmt.close();
+            } catch (SQLException se2) {
+                se2.printStackTrace();
+            }
+            try {
+                if (conn != null)
+                    conn.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+        return rs;
+    }
+
+    public int getCommentCountForDId(int id) {
+        Statement stmt = null;
+        int count = 0;
+        try {
+            stmt = conn.createStatement();
+            String sql = "select count(id) from comment where dynamicId = " + id;
+            System.out.println(sql);
+            ResultSet set = stmt.executeQuery(sql);
+            set.next();
+            count = set.getInt(1);
+            set.close();
+            // 完成后关闭
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // 最后是用于关闭资源的块
+            try {
+                if (stmt != null)
+                    stmt.close();
+            } catch (SQLException se2) {
+                se2.printStackTrace();
+            }
+            try {
+                if (conn != null)
+                    conn.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+        return count;
+    }
+
+    public int getLikeCountForDId(int id) {
+        Statement stmt = null;
+        int count = 0;
+        try {
+            stmt = conn.createStatement();
+            String sql = "select count(id) from dc_like where dynamicId = " + id;
+            System.out.println(sql);
+            ResultSet set = stmt.executeQuery(sql);
+            set.next();
+            count = set.getInt(1);
+            set.close();
+            // 完成后关闭
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // 最后是用于关闭资源的块
+            try {
+                if (stmt != null)
+                    stmt.close();
+            } catch (SQLException se2) {
+                se2.printStackTrace();
+            }
+            try {
+                if (conn != null)
+                    conn.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+        return count;
+    }
+
+    public List<LikeBean> getLikeListForU(long id) {
+        List<LikeBean> list = new ArrayList<>();
+        return list;
+    }
+
+    public boolean islikeDyForUId(int d_id, long u_id) {
+        // 执行 SQL 查询
+        Statement stmt = null;
+        boolean isLike = false;
+        try {
+            stmt = conn.createStatement();
+            String sql;
+
+            sql = "select * from dc_like where userId = " + u_id + " and dynamicId = " + d_id + " limit 1";
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                // 通过字段检索
+                isLike = true;
+            }
+            // 完成后关闭
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // 最后是用于关闭资源的块
+            try {
+                if (stmt != null)
+                    stmt.close();
+            } catch (SQLException se2) {
+                se2.printStackTrace();
+            }
+            try {
+                if (conn != null)
+                    conn.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+        return isLike;
+    }
+
+    public void removeLikeDy(long id, String dId, String cId) {
+        // 执行 SQL 查询
+        Statement stmt = null;
+        try {
+            stmt = conn.createStatement();
+            String sql;
+            sql = "delete from dc_like where userId = " + id + " and dynamicId = " + dId;
+            stmt.executeUpdate(sql);
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // 最后是用于关闭资源的块
+            try {
+                if (stmt != null)
+                    stmt.close();
+            } catch (SQLException se2) {
+                se2.printStackTrace();
+            }
+            try {
+                if (conn != null)
+                    conn.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+    }
+
+    public void removeDynamic(long id, String dId) {
+        // 执行 SQL 查询
+        Statement stmt = null;
+        try {
+            stmt = conn.createStatement();
+            String sql;
+            sql = "delete from dynamic where userId = " + id + " and id = " + dId;
+            stmt.executeUpdate(sql);
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // 最后是用于关闭资源的块
+            try {
+                if (stmt != null)
+                    stmt.close();
+            } catch (SQLException se2) {
+                se2.printStackTrace();
+            }
+            try {
+                if (conn != null)
+                    conn.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
     }
 }
