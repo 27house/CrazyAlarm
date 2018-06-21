@@ -67,7 +67,10 @@
         <activity
             android:name=".ui.community.AddDynamicActivity"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateHidden|stateUnchanged"  />
+            android:windowSoftInputMode="stateHidden|stateUnchanged" />
+        <activity
+            android:name=".ui.community.DynamicDetailsActivity"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

@@ -57,4 +57,14 @@ public class SetDynamicReq {
 	public void setContent(String content) {
 		this.content = content;
 	}
+
+	private int followId;
+
+	public int getFollowId() {
+		return followId;
+	}
+
+	public void setFollowId(int followId) {
+		this.followId = followId;
+	}
 }

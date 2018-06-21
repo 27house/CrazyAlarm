@@ -1,6 +1,7 @@
 package com.sunn.crazy.servlet;
 
 import com.sunn.crazy.Constant;
+import com.sunn.crazy.bean.Comment;
 import com.sunn.crazy.bean.Dynamic;
 import com.sunn.crazy.bean.LikeBean;
 import com.sunn.crazy.bean.UserBean;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/dynamic")
@@ -49,6 +51,8 @@ public class DynamicServlet extends HttpServlet {
                         break;
                     case "add_like":
                     case "delete_like":
+                    case "add_comment":
+                    case "delete_comment":
                         String dId = req.getParameter("d_id");
                         String cId = req.getParameter("c_id");
                         if (type.equals("add_like")) {
@@ -60,16 +64,28 @@ public class DynamicServlet extends HttpServlet {
                             }
                             jsonObject.put(Constant.KEY_RESULT, Constant.Error.ERROR_DB);
                             jsonObject.put(Constant.KEY_MESSAGE, "点赞失败！");
-                        } else {
+                        } else if (type.equals("delete_like")) {
                             DBService.getService().removeLikeDy(user.getId(), dId, cId);
                             jsonObject.put(Constant.KEY_RESULT, Constant.SUCCESS);
                             jsonObject.put(Constant.KEY_MESSAGE, "已取消赞！");
                             break;
+                        } else if (type.equals("add_comment")) {
+                            String content = req.getParameter("content");
+                            String fId = req.getParameter("f_id");
+                            boolean put = DBService.getService().putComment(user.getId(), dId, cId, fId, content);
+                            if (put) {
+                                jsonObject.put(Constant.KEY_RESULT, Constant.SUCCESS);
+                                jsonObject.put(Constant.KEY_MESSAGE, "评论成功！");
+                                break;
+                            }
+                            jsonObject.put(Constant.KEY_RESULT, Constant.Error.ERROR_DB);
+                            jsonObject.put(Constant.KEY_MESSAGE, "评论失败！");
+                        } else {
+                            DBService.getService().removeComment(user.getId(), dId, cId);
+                            jsonObject.put(Constant.KEY_RESULT, Constant.SUCCESS);
+                            jsonObject.put(Constant.KEY_MESSAGE, "已删除评论！");
+                            break;
                         }
-                        break;
-                    case "add_comment":
-                        break;
-                    case "delete_comment":
                         break;
                     default:
                         break;
@@ -119,7 +135,6 @@ public class DynamicServlet extends HttpServlet {
             case "getDetail":
                 break;
             case "getLikeList":
-
                 UserBean user = DBService.getService().getUserBean(account);
                 if (user != null) {
                     List<LikeBean> LikeList = DBService.getService().getLikeListForU(user.getId());
@@ -130,6 +145,18 @@ public class DynamicServlet extends HttpServlet {
                     jsonObject.put(Constant.KEY_RESULT, Constant.Error.ERROR_EMPTY_USER);
                     jsonObject.put(Constant.KEY_MESSAGE, Constant.Msg.ERROR_EMPTY_USER);
                 }
+                break;
+            case "getCommentList":
+                List<Comment> commentList = DBService.getService().getCommentList(req.getParameter("d_id"),
+                        Integer.parseInt(req.getParameter("page")),
+                        Integer.parseInt(req.getParameter("page_count")));
+                for (Comment c : commentList) {
+                    List<Comment> subList = DBService.getService().getSubCommentList(req.getParameter("d_id"), c.getId());
+                    c.setSubList(subList);
+                }
+                jsonObject.put(Constant.KEY_RESULT, Constant.SUCCESS);
+                jsonObject.put(Constant.KEY_LIST, commentList);
+                jsonObject.put(Constant.KEY_MESSAGE, "");
                 break;
         }
         resp.setCharacterEncoding("UTF-8");

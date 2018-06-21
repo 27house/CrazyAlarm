@@ -2,8 +2,10 @@ package com.sunn.xhui.crazyalarm.data;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 @SuppressWarnings("All")
-public class UserInfo {
+public class UserInfo implements Serializable {
 
 	private long id;
 	private String account;

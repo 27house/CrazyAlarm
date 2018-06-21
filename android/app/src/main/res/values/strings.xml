@@ -152,5 +152,8 @@
     <string name="send">发送</string>
     <string name="hint_dyanmic">说点什么吧...</string>
     <string name="click_upload">点击重新上传</string>
+    <string name="comment_count">评论%d条</string>
+    <string name="like_count">%d个点赞</string>
+    <string name="post">帖子</string>
 
 </resources>

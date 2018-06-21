@@ -37,7 +37,8 @@ import butterknife.OnClick;
  * @author XHui.sun
  * created at 2018/5/24 0024  11:49
  */
-public class CommunityFragment extends BaseFragment implements DynamicContract.ListView, SwipeRefreshLayout.OnRefreshListener, DynamicListAdapter.ItemClick {
+public class CommunityFragment extends BaseFragment implements DynamicContract.ListView,
+		SwipeRefreshLayout.OnRefreshListener, DynamicListAdapter.ItemClick {
 
 	@BindView(R.id.main_content)
 	CoordinatorLayout mainContent;
@@ -139,9 +140,11 @@ public class CommunityFragment extends BaseFragment implements DynamicContract.L
 				switch (type) {
 					case SetDynamicReq.TYPE_ADD_LIKE:
 						d.setIsLike(1);
+						d.setLikeCount(d.getLikeCount() + 1);
 						break;
 					case SetDynamicReq.TYPE_REMOVE_LIKE:
 						d.setIsLike(0);
+						d.setLikeCount(d.getLikeCount() - 1);
 						break;
 					case SetDynamicReq.TYPE_DELETE:
 						mAdapter.getDataList().remove(d);

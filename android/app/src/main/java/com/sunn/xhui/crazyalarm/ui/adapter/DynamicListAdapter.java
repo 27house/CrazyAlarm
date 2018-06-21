@@ -2,6 +2,7 @@ package com.sunn.xhui.crazyalarm.ui.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -23,6 +24,7 @@ import com.facebook.imagepipeline.image.CloseableImage;
 import com.sunn.xhui.crazyalarm.AlarmApp;
 import com.sunn.xhui.crazyalarm.R;
 import com.sunn.xhui.crazyalarm.data.Dynamic;
+import com.sunn.xhui.crazyalarm.ui.community.DynamicDetailsActivity;
 import com.sunn.xhui.crazyalarm.ui.widget.list.SpacesItemDecoration;
 import com.sunn.xhui.crazyalarm.utils.DensityUtil;
 import com.sunn.xhui.crazyalarm.utils.FileUtils;
@@ -106,6 +108,14 @@ public class DynamicListAdapter extends BaseRecycleAdapter {
 			int topBottom = DensityUtil.dip2px(context, 5);
 			rvPic.addItemDecoration(new SpacesItemDecoration(leftRight, topBottom));
 			picMaxW = (AlarmApp.getScreenW(context) - DensityUtil.dip2px(context, 80));
+			itemView.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(context, DynamicDetailsActivity.class);
+					intent.putExtra(DynamicDetailsActivity.EXTRA_DATA, dynamic);
+					context.startActivity(intent);
+				}
+			});
 		}
 
 		@OnClick(R.id.iv_delete)

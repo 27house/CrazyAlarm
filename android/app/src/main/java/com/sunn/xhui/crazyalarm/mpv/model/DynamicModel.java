@@ -7,6 +7,7 @@ import com.sunn.xhui.crazyalarm.net.RetrofitServiceManager;
 import com.sunn.xhui.crazyalarm.net.req.AddDynamicReq;
 import com.sunn.xhui.crazyalarm.net.req.SetDynamicReq;
 import com.sunn.xhui.crazyalarm.net.resp.BaseResp;
+import com.sunn.xhui.crazyalarm.net.resp.CommentListResp;
 import com.sunn.xhui.crazyalarm.net.resp.DynamicListResp;
 import com.sunn.xhui.crazyalarm.utils.FileUtils;
 
@@ -30,6 +31,13 @@ public class DynamicModel implements DynamicContract.Model {
 	@Override
 	public Observable<DynamicListResp> getDynamicList(int page, int page_count) {
 		return RetrofitServiceManager.getInstance().getService().getDynamicList(page, page_count, AlarmApp.getAccount())
+				.subscribeOn(Schedulers.io())
+				.observeOn(AndroidSchedulers.mainThread());
+	}
+
+	@Override
+	public Observable<CommentListResp> getCommentList(int dId, int page, int page_count) {
+		return  RetrofitServiceManager.getInstance().getService().getCommentList(dId, page, page_count, AlarmApp.getAccount())
 				.subscribeOn(Schedulers.io())
 				.observeOn(AndroidSchedulers.mainThread());
 	}
@@ -72,6 +80,11 @@ public class DynamicModel implements DynamicContract.Model {
 						.deleteDynamic(AlarmApp.getAccount(), req.getdId(), req.getcId())
 						.subscribeOn(Schedulers.io())
 						.observeOn(AndroidSchedulers.mainThread());
+				case SetDynamicReq.TYPE_ADD_COMMENT:
+					return RetrofitServiceManager.getInstance().getService()
+							.sendComment(AlarmApp.getAccount(), req.getdId(), req.getcId(), req.getFollowId(), req.getContent())
+							.subscribeOn(Schedulers.io())
+							.observeOn(AndroidSchedulers.mainThread());
 			default:
 				break;
 		}

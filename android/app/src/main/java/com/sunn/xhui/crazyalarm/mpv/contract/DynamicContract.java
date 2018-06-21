@@ -1,9 +1,11 @@
 package com.sunn.xhui.crazyalarm.mpv.contract;
 
+import com.sunn.xhui.crazyalarm.data.Comment;
 import com.sunn.xhui.crazyalarm.data.Dynamic;
 import com.sunn.xhui.crazyalarm.net.req.AddDynamicReq;
 import com.sunn.xhui.crazyalarm.net.req.SetDynamicReq;
 import com.sunn.xhui.crazyalarm.net.resp.BaseResp;
+import com.sunn.xhui.crazyalarm.net.resp.CommentListResp;
 import com.sunn.xhui.crazyalarm.net.resp.DynamicListResp;
 
 import java.util.List;
@@ -15,6 +17,8 @@ import rx.Observable;
 public interface DynamicContract {
 	interface Model {
 		Observable<DynamicListResp> getDynamicList(int page, int page_count);
+
+		Observable<CommentListResp> getCommentList(int dId, int page, int page_count);
 
 		Observable<BaseResp> addDynamic(AddDynamicReq req);
 
@@ -35,6 +39,9 @@ public interface DynamicContract {
 	interface ListView extends ControlView {
 		void returnDynamicList(List<Dynamic> list);
 	}
+	interface DetailsView extends ControlView {
+		void returnCommentList(List<Comment> list);
+	}
 
 	interface AddView extends View {
 		void returnResult(boolean success);
@@ -43,11 +50,11 @@ public interface DynamicContract {
 
 	interface Presenter {
 		void getDynamicList(int page, int page_count);
+		void getCommentList(int dId, int page, int page_count);
 
 		void addDynamic(AddDynamicReq req);
 
 		void setDynamic(SetDynamicReq req);
-
 
 	}
 }

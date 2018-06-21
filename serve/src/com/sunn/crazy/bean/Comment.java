@@ -1,11 +1,14 @@
 package com.sunn.crazy.bean;
 
+import java.util.List;
+
 public class Comment {
 
     private int id;
     private int dynamicId;
+    private int commentId;
     private int followId;
-    private String userId;
+    private UserBean user;
     private String create_time;
     private String content;
 
@@ -25,6 +28,14 @@ public class Comment {
         this.dynamicId = dynamicId;
     }
 
+    public int getCommentId() {
+        return commentId;
+    }
+
+    public void setCommentId(int commentId) {
+        this.commentId = commentId;
+    }
+
     public int getFollowId() {
         return followId;
     }
@@ -33,12 +44,12 @@ public class Comment {
         this.followId = followId;
     }
 
-    public String getUserId() {
-        return userId;
+    public UserBean getUser() {
+        return user;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUser(UserBean user) {
+        this.user = user;
     }
 
     public String getCreate_time() {
@@ -55,5 +66,15 @@ public class Comment {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    private List<Comment> subList;
+
+    public List<Comment> getSubList() {
+        return subList;
+    }
+
+    public void setSubList(List<Comment> subList) {
+        this.subList = subList;
     }
 }

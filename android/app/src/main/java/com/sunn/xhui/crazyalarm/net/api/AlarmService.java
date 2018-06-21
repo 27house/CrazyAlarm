@@ -1,6 +1,7 @@
 package com.sunn.xhui.crazyalarm.net.api;
 
 import com.sunn.xhui.crazyalarm.net.resp.BaseResp;
+import com.sunn.xhui.crazyalarm.net.resp.CommentListResp;
 import com.sunn.xhui.crazyalarm.net.resp.DynamicListResp;
 import com.sunn.xhui.crazyalarm.net.resp.LoginResp;
 import com.sunn.xhui.crazyalarm.net.resp.TaskListResp;
@@ -71,4 +72,12 @@ public interface AlarmService {
 	@FormUrlEncoded
 	@POST("dynamic?type=delete_dynamic")
 	Observable<BaseResp> deleteDynamic(@Field("account") String account, @Field("d_id") int dId, @Field("c_id") int cId);
+
+	@FormUrlEncoded
+	@POST("dynamic?type=add_comment")
+	Observable<BaseResp> sendComment(@Field("account") String account, @Field("d_id") int dId,
+									 @Field("c_id") int cId, @Field("f_id") int fId, @Field("content") String content);
+
+	@GET("dynamic?type=getCommentList")
+	Observable<CommentListResp> getCommentList(@Query("d_id") int dId, @Query("page") int page, @Query("page_count") int page_count, @Query("account") String account);
 }

@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -83,6 +84,19 @@ public class AddDynamicActivity extends AppCompatActivity implements AddImageGri
 
 	@OnClick(R.id.tv_cancel)
 	public void clickCancel(View view) {
+		finishActivity();
+	}
+
+	@Override
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+			finishActivity();
+			return true;
+		}
+		return super.onKeyUp(keyCode, event);
+	}
+
+	private void finishActivity() {
 		new AlertDialog.Builder(this)
 				.setTitle("提示")
 				.setMessage("退出后不会保存，是否确定退出？")
@@ -92,12 +106,7 @@ public class AddDynamicActivity extends AppCompatActivity implements AddImageGri
 						finish();
 					}
 				})
-				.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
-					}
-				}).create().show();
+				.setNegativeButton("取消", null).create().show();
 	}
 
 	@OnClick(R.id.tv_send)

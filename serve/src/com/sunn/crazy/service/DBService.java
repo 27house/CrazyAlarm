@@ -296,7 +296,7 @@ public class DBService {
         boolean rs;
         try {
             stmt = conn.createStatement();
-            String create_time = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date());
+            String create_time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
             String pics = "";
             List<Part> partList = (List<Part>) req.getParts();
             for (Part part : partList) {
@@ -566,7 +566,7 @@ public class DBService {
         int count = 0;
         try {
             stmt = conn.createStatement();
-            String sql = "select count(id) from comment where dynamicId = " + id;
+            String sql = "select count(id) from dy_comment where dynamicId = " + id;
             System.out.println(sql);
             ResultSet set = stmt.executeQuery(sql);
             set.next();
@@ -728,5 +728,181 @@ public class DBService {
                 se.printStackTrace();
             }
         }
+    }
+
+    public boolean putComment(long uId, String dId, String cId, String fId, String content) {
+        // 执行 SQL 查询
+        Statement stmt = null;
+        boolean rs;
+        try {
+            stmt = conn.createStatement();
+            String create_time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+            String sql = "insert into dy_comment (userId, dynamicId, commentId, followId, content, create_time) values ('"
+                    + uId + "', '" + dId + "', '" + cId + "', '" + fId + "', '" + content + "', '" + create_time + "')";
+            stmt.executeUpdate(sql);
+            rs = true;
+            // 完成后关闭
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            rs = false;
+        } finally {
+            // 最后是用于关闭资源的块
+            try {
+                if (stmt != null)
+                    stmt.close();
+            } catch (SQLException se2) {
+                se2.printStackTrace();
+            }
+            try {
+                if (conn != null)
+                    conn.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+        return rs;
+    }
+
+    public void removeComment(long id, String dId, String cId) {
+        // 执行 SQL 查询
+        Statement stmt = null;
+        try {
+            stmt = conn.createStatement();
+            String sql;
+            sql = "delete from dy_comment where userId =  id and id =  cId";
+            stmt.executeUpdate(sql);
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // 最后是用于关闭资源的块
+            try {
+                if (stmt != null)
+                    stmt.close();
+            } catch (SQLException se2) {
+                se2.printStackTrace();
+            }
+            try {
+                if (conn != null)
+                    conn.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+    }
+
+    public List<Comment> getCommentList(String d_id, int page, int page_count) {
+        List<Comment> list = new ArrayList<>();
+        // 执行 SQL 查询
+        Statement stmt = null;
+        try {
+            stmt = conn.createStatement();
+            String sql;
+            int start = page * page_count;
+            int end = start + page_count;
+            sql = "SELECT dy_comment . * , user_info.account, user_info.nickname, user_info.avatar, user_info.sex, user_info.motto" +
+                    " FROM dy_comment " +
+                    " INNER JOIN user_info ON dy_comment.userId = user_info.id" +
+                    " WHERE dy_comment.commentId = 0 and dy_comment.dynamicId = " + d_id +
+                    " ORDER BY dy_comment.create_time desc,dy_comment.id asc " +
+                    " LIMIT " + start + " , " + end + "";
+            System.out.println(sql);
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                // 通过字段检索
+                Comment bean = new Comment();
+                bean.setId(rs.getInt("id"));
+                int userId = rs.getInt("userId");
+                UserBean userBean = new UserBean();
+                userBean.setId(userId);
+                userBean.setAccount(rs.getString("account"));
+                userBean.setNickname(rs.getString("nickname"));
+                userBean.setMotto(rs.getString("motto"));
+                userBean.setAvatar(rs.getString("avatar"));
+                userBean.setSex(rs.getString("sex"));
+                bean.setUser(userBean);
+                bean.setFollowId(rs.getInt("followId"));
+                bean.setContent(rs.getString("content"));
+                bean.setCreate_time(rs.getString("create_time"));
+                list.add(bean);
+            }
+            // 完成后关闭
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // 最后是用于关闭资源的块
+            try {
+                if (stmt != null)
+                    stmt.close();
+            } catch (SQLException se2) {
+                se2.printStackTrace();
+            }
+            try {
+                if (conn != null)
+                    conn.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+        return list;
+    }
+
+    public List<Comment> getSubCommentList(String dId, int cId) {
+        List<Comment> list = new ArrayList<>();
+        // 执行 SQL 查询
+        Statement stmt = null;
+        try {
+            stmt = conn.createStatement();
+            String sql;
+            sql = "SELECT dy_comment . * , user_info.account, user_info.nickname " +
+                    " FROM dy_comment " +
+                    " INNER JOIN user_info ON dy_comment.userId = user_info.id" +
+                    " WHERE dy_comment.commentId = " + cId + " and dy_comment.dynamicId = " + dId +
+                    " ORDER BY dy_comment.create_time desc,dy_comment.id asc ";
+            System.out.println(sql);
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                // 通过字段检索
+                Comment bean = new Comment();
+                bean.setId(rs.getInt("id"));
+                int userId = rs.getInt("userId");
+                UserBean userBean = new UserBean();
+                userBean.setId(userId);
+                userBean.setAccount(rs.getString("account"));
+                userBean.setNickname(rs.getString("nickname"));
+                bean.setUser(userBean);
+                bean.setFollowId(rs.getInt("followId"));
+                bean.setContent(rs.getString("content"));
+                bean.setCreate_time(rs.getString("create_time"));
+                list.add(bean);
+            }
+            // 完成后关闭
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // 最后是用于关闭资源的块
+            try {
+                if (stmt != null)
+                    stmt.close();
+            } catch (SQLException se2) {
+                se2.printStackTrace();
+            }
+            try {
+                if (conn != null)
+                    conn.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+        return list;
     }
 }
