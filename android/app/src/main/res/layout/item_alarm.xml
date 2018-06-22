@@ -37,14 +37,35 @@
                 android:text="7:30"
                 android:textSize="20sp" />
 
+
             <TextView
                 android:id="@+id/tv_music"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                android:layout_toStartOf="@id/switchCompat"
+                android:layout_alignBaseline="@+id/tv_time"
+                android:layout_marginEnd="10dp"
+                android:layout_toStartOf="@id/tv_task"
                 android:drawableStart="@drawable/ic_music"
+                android:ellipsize="end"
                 android:gravity="center_vertical"
+                android:maxLines="1"
+                android:maxWidth="80dp"
+                android:text=""
+                android:textColor="@color/gray_99"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_task"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/tv_time"
+                android:layout_marginEnd="10dp"
+                android:layout_toStartOf="@id/switchCompat"
+                android:drawableStart="@drawable/ic_game"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:maxWidth="80dp"
                 android:text=""
                 android:textColor="@color/gray_99"
                 android:textSize="12sp" />

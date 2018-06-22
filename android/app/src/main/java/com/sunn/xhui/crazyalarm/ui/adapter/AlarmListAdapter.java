@@ -3,7 +3,9 @@ package com.sunn.xhui.crazyalarm.ui.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
@@ -62,6 +64,8 @@ public class AlarmListAdapter extends BaseRecycleAdapter {
 		TextView tvNote;
 		@BindView(R.id.tv_music)
 		TextView tvMusic;
+		@BindView(R.id.tv_task)
+		TextView tvTask;
 		@BindView(R.id.switchCompat)
 		SwitchCompat switchCompat;
 		@BindView(R.id.cardView)
@@ -93,8 +97,22 @@ public class AlarmListAdapter extends BaseRecycleAdapter {
 			if (alarm.getVoice() != null) {
 				tvMusic.setVisibility(View.VISIBLE);
 				tvMusic.setText(alarm.getVoice().getTitle());
+				Drawable drawable = ContextCompat.getDrawable(context, R.drawable.ic_music);
+				assert drawable != null;
+				drawable.setBounds(0, 0, drawable.getIntrinsicWidth() / 2, drawable.getIntrinsicHeight() / 2);
+				tvMusic.setCompoundDrawables(drawable, null, null, null);
 			} else {
 				tvMusic.setVisibility(View.GONE);
+			}
+			if (alarm.getAlarmGame() != null) {
+				tvTask.setVisibility(View.VISIBLE);
+				tvTask.setText(alarm.getAlarmGame().getName());
+				Drawable drawable = ContextCompat.getDrawable(context, R.drawable.ic_game);
+				assert drawable != null;
+				drawable.setBounds(0, 0, drawable.getIntrinsicWidth() / 2, drawable.getIntrinsicHeight() / 2);
+				tvTask.setCompoundDrawables(drawable, null, null, null);
+			} else {
+				tvTask.setVisibility(View.GONE);
 			}
 			switchCompat.setOnCheckedChangeListener(this);
 		}

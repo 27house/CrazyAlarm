@@ -8,11 +8,13 @@ import android.widget.RadioGroup;
 
 import com.sunn.xhui.crazyalarm.R;
 import com.sunn.xhui.crazyalarm.data.AlarmGame;
+import com.sunn.xhui.crazyalarm.db.DatabaseHelper;
 import com.sunn.xhui.crazyalarm.mpv.contract.AlarmContract;
 import com.sunn.xhui.crazyalarm.mpv.presenter.AlarmPresenter;
 import com.sunn.xhui.crazyalarm.ui.BaseFragment;
 import com.sunn.xhui.crazyalarm.ui.adapter.AlarmGameListAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -23,7 +25,7 @@ import butterknife.BindView;
  * @author XHui.sun
  * created at 2018/5/25 0025  10:53
  */
-public class SelectGameFragment extends BaseFragment implements AlarmContract.TaskView{
+public class SelectGameFragment extends BaseFragment implements AlarmContract.TaskView {
 
 	@BindView(R.id.rg_game)
 	RadioGroup rgGame;
@@ -33,6 +35,8 @@ public class SelectGameFragment extends BaseFragment implements AlarmContract.Ta
 	private AlarmGameListAdapter gameListAdapter;
 	private int gameType;
 	private AlarmPresenter presenter;
+	private List<AlarmGame> gameList;
+	private AlarmGame defaultGame;
 
 	@Override
 	public void onAttach(Context context) {
@@ -70,6 +74,9 @@ public class SelectGameFragment extends BaseFragment implements AlarmContract.Ta
 		recyclerView.setAdapter(gameListAdapter);
 		presenter = new AlarmPresenter(this);
 		presenter.getTaskList();
+		defaultGame = DatabaseHelper.getInstance(activity).getDefaultGame();
+		gameList = new ArrayList<>();
+		gameList.add(defaultGame);
 	}
 
 	public void commit() {
@@ -99,7 +106,10 @@ public class SelectGameFragment extends BaseFragment implements AlarmContract.Ta
 	@Override
 	public void returnTaskList(boolean success, List<AlarmGame> list) {
 		if (success) {
-			gameListAdapter.setDGameList(list);
+			gameList.clear();
+			gameList.add(defaultGame);
+			gameList.addAll(list);
+			gameListAdapter.setDGameList(gameList);
 		}
 	}
 

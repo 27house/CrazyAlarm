@@ -84,7 +84,7 @@ public class CommentListAdapter extends BaseRecycleAdapter {
 			tvTime.setText(comment.getCreate_time());
 			tvContent.setText(comment.getContent());
 			rvComment.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
-			rvComment.setAdapter(new SubCommentListAdapter(context, clickCallback, comment.getSubList()));
+			rvComment.setAdapter(new SubCommentListAdapter(context, clickCallback, comment));
 		}
 
 	}

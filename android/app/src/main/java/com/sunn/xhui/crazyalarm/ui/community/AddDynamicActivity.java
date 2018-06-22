@@ -121,7 +121,7 @@ public class AddDynamicActivity extends AppCompatActivity implements AddImageGri
 		presenter.addDynamic(req);
 	}
 
-	private List<LocalMedia> selectList;
+	private List<LocalMedia> selectList = new ArrayList<>();
 
 	@Override
 	public void addPic() {

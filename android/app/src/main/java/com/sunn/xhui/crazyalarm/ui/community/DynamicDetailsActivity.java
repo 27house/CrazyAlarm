@@ -2,10 +2,16 @@ package com.sunn.xhui.crazyalarm.ui.community;
 
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -19,7 +25,10 @@ import com.sunn.xhui.crazyalarm.mpv.contract.DynamicContract;
 import com.sunn.xhui.crazyalarm.mpv.presenter.DynamicPresenter;
 import com.sunn.xhui.crazyalarm.net.req.SetDynamicReq;
 import com.sunn.xhui.crazyalarm.ui.adapter.CommentListAdapter;
+import com.sunn.xhui.crazyalarm.ui.alarm.SelectGameFragment;
+import com.sunn.xhui.crazyalarm.utils.Keyboardtils;
 
+import java.lang.reflect.Method;
 import java.util.List;
 
 import butterknife.BindView;
@@ -30,7 +39,7 @@ import butterknife.OnClick;
  * @author XHui.sun
  * created at 2018/6/21 0021  14:12
  */
-public class DynamicDetailsActivity extends AppCompatActivity implements DynamicContract.DetailsView, DynamicDetailsView.ClickCallback, CommentListAdapter.ClickCallback {
+public class DynamicDetailsActivity extends AppCompatActivity implements DynamicContract.DetailsView, DynamicDetailsView.ClickCallback, CommentListAdapter.ClickCallback, Toolbar.OnMenuItemClickListener {
 
 	public static final String EXTRA_DATA = "EXTRA_DATA";
 	@BindView(R.id.toolbar)
@@ -61,7 +70,9 @@ public class DynamicDetailsActivity extends AppCompatActivity implements Dynamic
 		ButterKnife.bind(this);
 		dynamic = (Dynamic) getIntent().getSerializableExtra(EXTRA_DATA);
 		presenter = new DynamicPresenter(this);
+		setSupportActionBar(toolbar);
 		toolbar.setTitle(R.string.post);
+		toolbar.setOnMenuItemClickListener(this);
 		detailsView = new DynamicDetailsView(this, this);
 		detailsView.fillView(dynamic);
 
@@ -70,6 +81,43 @@ public class DynamicDetailsActivity extends AppCompatActivity implements Dynamic
 		rvComment.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 		rvComment.setAdapter(listAdapter);
 		presenter.getCommentList(dynamic.getId(), 0, 30);
+
+		etComment.setOnKeyListener(new View.OnKeyListener() {
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				if (keyCode == KeyEvent.KEYCODE_DEL) {
+					if (etComment.getHint().length() != 0 && etComment.getText().length() == 0) {
+						followId = (int) dynamic.getUser().getId();
+						commentId = 0;
+						etComment.setHint("");
+					}
+				}
+				return false;
+			}
+		});
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		menu.clear();
+		getMenuInflater().inflate(R.menu.menu_dynamic, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onMenuOpened(int featureId, Menu menu) {
+		if (menu != null) {
+			if (menu.getClass() == MenuBuilder.class) {
+				try {
+					Method m = menu.getClass().getDeclaredMethod("setOptionalIconsVisible", Boolean.TYPE);
+					m.setAccessible(true);
+					m.invoke(menu, true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return super.onMenuOpened(featureId, menu);
 	}
 
 	@OnClick(R.id.iv_smile)
@@ -118,8 +166,10 @@ public class DynamicDetailsActivity extends AppCompatActivity implements Dynamic
 				finish();
 				break;
 			case SetDynamicReq.TYPE_ADD_COMMENT:
+				Keyboardtils.closeKeyboard(etComment, this);
 				Toast.makeText(this, tip, Toast.LENGTH_SHORT).show();
 				etComment.setText("");
+				presenter.getCommentList(dynamic.getId(), 0, 30);
 				break;
 			default:
 				break;
@@ -148,4 +198,26 @@ public class DynamicDetailsActivity extends AppCompatActivity implements Dynamic
 		commentId = cId;
 		etComment.setHint("对 " + userNick + " 说：");
 	}
+
+	@Override
+	public boolean onMenuItemClick(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.menu_save:
+
+				break;
+			default:
+				break;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == android.R.id.home) {
+			finish();
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
 }
+

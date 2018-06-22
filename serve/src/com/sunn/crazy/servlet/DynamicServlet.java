@@ -151,7 +151,13 @@ public class DynamicServlet extends HttpServlet {
                         Integer.parseInt(req.getParameter("page")),
                         Integer.parseInt(req.getParameter("page_count")));
                 for (Comment c : commentList) {
+                    int subTotal = DBService.getService().getSubCommentCountForCId(c.getId());
+                    c.setSubCount(subTotal);
                     List<Comment> subList = DBService.getService().getSubCommentList(req.getParameter("d_id"), c.getId());
+                    for (Comment sub : subList) {
+                        UserBean userBean = DBService.getService().getUserBean(sub.getFollowId());
+                        sub.setFollowUser(userBean);
+                    }
                     c.setSubList(subList);
                 }
                 jsonObject.put(Constant.KEY_RESULT, Constant.SUCCESS);

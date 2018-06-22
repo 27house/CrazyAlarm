@@ -59,7 +59,6 @@ public class AlarmRingActivity extends AppCompatActivity {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		startActivity(new Intent(this, WebGameActivity.class));
 	}
 
 	//获取系统默认铃声的Uri
@@ -81,6 +80,9 @@ public class AlarmRingActivity extends AppCompatActivity {
 	}
 
 	public void stop(View view) {
+		if (alarm.getAlarmGame() != null || alarm.getAlarmGame().getId() == 0) {
+			startActivity(new Intent(this, WebGameActivity.class));
+		}
 		Intent intent = new Intent(this, AlarmReceiver.class);
 		PendingIntent pi = PendingIntent.getBroadcast(this, alarm.getId(), intent, 0);
 		AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);

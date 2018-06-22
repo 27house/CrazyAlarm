@@ -51,16 +51,12 @@ public class VoiceOnlineFragment extends BaseFragment
 
 	@Override
 	protected void activityCreated() {
-		try {
-			presenter = new AlarmPresenter(this);
-			onlineAdapter = new VoiceListAdapter(activity, this);
-			rvOnline.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false));
-			rvOnline.setAdapter(onlineAdapter);
-			swipeRefreshLayout.setOnRefreshListener(this);
-			presenter.getOnlineRing();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		presenter = new AlarmPresenter(this);
+		onlineAdapter = new VoiceListAdapter(activity, this);
+		rvOnline.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false));
+		rvOnline.setAdapter(onlineAdapter);
+		swipeRefreshLayout.setOnRefreshListener(this);
+		presenter.getOnlineRing();
 	}
 
 	@Override

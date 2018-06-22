@@ -1,7 +1,16 @@
 package com.sunn.xhui.crazyalarm.ui.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,10 +31,19 @@ import butterknife.ButterKnife;
 
 public class SubCommentListAdapter extends BaseRecycleAdapter {
 	private CommentListAdapter.ClickCallback clickCallback;
+	private boolean hasMore;
+	private int lastId;
+	private Comment parent;
 
-	public SubCommentListAdapter(Context context, CommentListAdapter.ClickCallback clickCallback, List<Comment> list) {
+	public SubCommentListAdapter(Context context, CommentListAdapter.ClickCallback clickCallback, Comment parent) {
 		super(context);
 		this.clickCallback = clickCallback;
+		this.parent = parent;
+		List<Comment> list = parent.getSubList();
+		this.hasMore = parent.getSubCount() > list.size();
+		if (!list.isEmpty()) {
+			lastId = list.get(list.size() - 1).getId();
+		}
 		setDataList(list);
 	}
 
@@ -51,7 +69,8 @@ public class SubCommentListAdapter extends BaseRecycleAdapter {
 			itemView.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					clickCallback.clickComment(comment.getId(), comment.getUser().getId(), comment.getUser().getNickname());
+					// 所有子评论的cID都填父评论上
+					clickCallback.clickComment(parent.getId(), comment.getUser().getId(), comment.getUser().getNickname());
 				}
 			});
 		}
@@ -60,8 +79,45 @@ public class SubCommentListAdapter extends BaseRecycleAdapter {
 		public void setData(Object item) {
 			super.setData(item);
 			comment = (Comment) item;
-			String text = comment.getUser().getNickname() + "对" + comment.getFollowId() + "说：" + comment.getContent();
-			tvComment.setText(text);
+			tvComment.setText("");
+			if (hasMore && lastId == comment.getId()) {
+				// 最后一条 显示“查看更多”
+				tvComment.append(getNickNameSpan("查看全部 " + parent.getSubCount() + " 条内容"));
+			} else {
+				tvComment.append(getNickNameSpan(comment.getUser().getNickname()));
+				tvComment.append("对");
+				tvComment.append(getNickNameSpan(comment.getFollowUser().getNickname()));
+				tvComment.append("说：");
+				tvComment.append(comment.getContent());
+			}
+		}
+
+		private SpannableString getContentSpan(String content) {
+			SpannableString spanString = new SpannableString(content);
+			// 颜色
+			ForegroundColorSpan span = new ForegroundColorSpan(Color.BLACK);
+			spanString.setSpan(span, 0, content.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			return spanString;
+		}
+
+		private SpannableString getNickNameSpan(String nickname) {
+
+			SpannableString spanString = new SpannableString(nickname);
+			// 颜色
+			ForegroundColorSpan span = new ForegroundColorSpan(Color.parseColor("#4E9EE2"));
+			spanString.setSpan(span, 0, nickname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			// 加粗
+//			StyleSpan span1 = new StyleSpan(Typeface.BOLD_ITALIC);
+//			spanString.setSpan(span1, 0, nickname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			// 点击
+//			ClickableSpan span2 = new ClickableSpan() {
+//				@Override
+//				public void onClick(View widget) {
+//
+//				}
+//			};
+//			spanString.setSpan(span2, 0, nickname.length(), Spanned.SPAN_COMPOSING);
+			return spanString;
 		}
 
 	}

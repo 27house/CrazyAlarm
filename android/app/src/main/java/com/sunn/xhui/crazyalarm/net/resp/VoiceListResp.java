@@ -6,13 +6,13 @@ import java.util.List;
 
 public class VoiceListResp extends BaseResp {
 
-    private List<Voice> datas;
+    private List<Voice> list;
 
-	public List<Voice> getDatas() {
-		return datas;
+	public List<Voice> getList() {
+		return list;
 	}
 
-	public void setDatas(List<Voice> datas) {
-		this.datas = datas;
+	public void setList(List<Voice> list) {
+		this.list = list;
 	}
 }

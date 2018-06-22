@@ -15,6 +15,11 @@ public class AlarmGame implements Serializable {
 	private int id;
 	private String name;
 	private int type;
+	/**
+	 * rules : 1分钟内获得80分即可完成任务
+	 */
+
+	private String rules;
 
 	public int getType() {
 		return type;
@@ -38,5 +43,14 @@ public class AlarmGame implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+
+	public String getRules() {
+		return rules;
+	}
+
+	public void setRules(String rules) {
+		this.rules = rules;
 	}
 }

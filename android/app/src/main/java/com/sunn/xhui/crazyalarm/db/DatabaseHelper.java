@@ -144,7 +144,7 @@ public class DatabaseHelper extends SerializedUtils implements ColumnInterface {
 		voice.setTitle(cursor.getString(cursor.getColumnIndex(ColumnInterface.AlarmTab.COL_MUS_TITLE)));
 		alarm.setVoice(voice);
 
-		AlarmGame game =new AlarmGame();
+		AlarmGame game = new AlarmGame();
 		game.setName(cursor.getString(cursor.getColumnIndex(ColumnInterface.AlarmTab.COL_GAM_NAME)));
 		game.setType(cursor.getInt(cursor.getColumnIndex(ColumnInterface.AlarmTab.COL_GAM_TYPE)));
 		game.setId(cursor.getInt(cursor.getColumnIndex(ColumnInterface.AlarmTab.COL_GAM_ID)));
@@ -181,26 +181,14 @@ public class DatabaseHelper extends SerializedUtils implements ColumnInterface {
 	}
 
 	public AlarmGame getDefaultGame() {
-		return getAlarmGameList().get(0);
-	}
-
-	public List<AlarmGame> getAlarmGameList() {
-		List<AlarmGame> games = new ArrayList<>();
 		AlarmGame game = new AlarmGame();
-		game.setId(1);
-		game.setName("愤怒的小鸟");
-
-		AlarmGame game2 = new AlarmGame();
-		game2.setId(2);
-		game2.setName("背单词");
-		games.add(game2);
-
-		AlarmGame game3 = new AlarmGame();
-		game3.setId(3);
-		game3.setName("贪吃蛇");
-		games.add(game3);
-		return games;
+		game.setId(0);
+		game.setName("正常结束");
+		game.setType(AlarmGame.TYPE_NORMAL);
+		game.setRules("点击关闭即可");
+		return game;
 	}
+
 
 	private AlarmGame cursorToGame(Cursor cursor) {
 		AlarmGame game = new AlarmGame();

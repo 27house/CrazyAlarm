@@ -44,7 +44,9 @@
         <activity
             android:name=".ui.garden.SettingsActivity"
             android:theme="@style/AppTheme" />
-        <activity android:name=".ui.alarm.WebGameActivity" />
+        <activity
+            android:name=".ui.alarm.WebGameActivity"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.garden.LoginActivity"
             android:label="@string/title_activity_login"

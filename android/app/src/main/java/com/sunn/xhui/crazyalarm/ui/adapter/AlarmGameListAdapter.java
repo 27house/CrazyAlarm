@@ -1,6 +1,7 @@
 package com.sunn.xhui.crazyalarm.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.sunn.xhui.crazyalarm.R;
 import com.sunn.xhui.crazyalarm.data.AlarmGame;
 import com.sunn.xhui.crazyalarm.ui.alarm.AddAlarmActivity;
+import com.sunn.xhui.crazyalarm.ui.alarm.WebGameActivity;
 import com.sunn.xhui.crazyalarm.ui.widget.ProgressButton;
 
 import java.util.List;
@@ -102,6 +104,12 @@ public class AlarmGameListAdapter extends BaseRecycleAdapter {
 				tvTitle.setTextColor(ContextCompat.getColor(context, R.color.gray_33));
 				ivIcon.setVisibility(View.GONE);
 			}
+			btnVoice.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					context.startActivity(new Intent(context, WebGameActivity.class));
+				}
+			});
 
 		}
 

@@ -864,7 +864,8 @@ public class DBService {
                     " FROM dy_comment " +
                     " INNER JOIN user_info ON dy_comment.userId = user_info.id" +
                     " WHERE dy_comment.commentId = " + cId + " and dy_comment.dynamicId = " + dId +
-                    " ORDER BY dy_comment.create_time desc,dy_comment.id asc ";
+                    " ORDER BY dy_comment.create_time desc,dy_comment.id asc " +
+                    " LIMIT 0 , 3";
             System.out.println(sql);
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
@@ -904,5 +905,39 @@ public class DBService {
             }
         }
         return list;
+    }
+
+    public int getSubCommentCountForCId(int id) {
+        Statement stmt = null;
+        int count = 0;
+        try {
+            stmt = conn.createStatement();
+            String sql = "select count(id) from dy_comment where commentId = " + id;
+            System.out.println(sql);
+            ResultSet set = stmt.executeQuery(sql);
+            set.next();
+            count = set.getInt(1);
+            set.close();
+            // 完成后关闭
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // 最后是用于关闭资源的块
+            try {
+                if (stmt != null)
+                    stmt.close();
+            } catch (SQLException se2) {
+                se2.printStackTrace();
+            }
+            try {
+                if (conn != null)
+                    conn.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+        return count;
     }
 }

@@ -14,10 +14,39 @@
         <item name="colorControlNormal">@color/colorPrimary</item>
         <item name="colorButtonNormal">@color/colorPrimary</item><!--正常状态下的颜色  -->
         <item name="colorControlHighlight">@color/colorPrimaryDark</item><!--覆盖色，按下的颜色  -->
+        <!-- 加入toolbar溢出【弹出】菜单的风格 -->
+        <item name="actionOverflowMenuStyle">@style/OverflowMenuStyle</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <!--溢出[弹出]菜单样式 parent相当于继承【可以不要parent】-->
+    <style name="OverflowMenuStyle" parent="@style/Widget.AppCompat.PopupMenu.Overflow">
+        <!-- 是否覆盖锚点，默认为true，即盖住Toolbar -->
+        <item name="overlapAnchor">false</item>
+        <item name="android:width">80dp</item>
+        <item name="android:dropDownWidth">50dp</item>
+        <item name="android:paddingRight">2dp</item>
+        <item name="android:paddingLeft">2dp</item>
 
+        <!-- 弹出层背景颜色 -->
+        <item name="android:popupBackground">@color/white_ef</item>
+        <!-- 弹出层垂直方向上的偏移，即在竖直方向上距离Toolbar的距离，值为负则会盖住Toolbar -->
+        <item name="android:dropDownVerticalOffset">5dp</item>
+        <!-- 弹出层水平方向上的偏移，即距离屏幕左边的距离，负值会导致右边出现空隙 -->
+        <item name="android:dropDownHorizontalOffset">0dp</item>
+        <!-- 设置弹出菜单文字颜色 -->
+        <item name="android:textColor">@color/gray_4a</item>
+        <item name="android:dropDownListViewStyle">@style/AppDropDownListViewStyle</item>
+    </style>
+
+    <style name="AppDropDownListViewStyle" parent="Widget.AppCompat.ListView.DropDown">
+        <item name="android:showDividers">middle</item>
+        <item name="android:divider">@color/gray_ee</item>
+        <item name="android:dividerHeight">0.5dp</item>
+    </style>
+
+    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">15sp</item>
+    </style>
 </resources>

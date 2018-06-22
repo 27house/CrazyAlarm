@@ -8,6 +8,7 @@ public class Comment {
     private int dynamicId;
     private int commentId;
     private int followId;
+    private UserBean followUser;
     private UserBean user;
     private String create_time;
     private String content;
@@ -76,5 +77,23 @@ public class Comment {
 
     public void setSubList(List<Comment> subList) {
         this.subList = subList;
+    }
+
+    public UserBean getFollowUser() {
+        return followUser;
+    }
+
+    public void setFollowUser(UserBean followUser) {
+        this.followUser = followUser;
+    }
+
+    private int subCount;
+
+    public int getSubCount() {
+        return subCount;
+    }
+
+    public void setSubCount(int subCount) {
+        this.subCount = subCount;
     }
 }

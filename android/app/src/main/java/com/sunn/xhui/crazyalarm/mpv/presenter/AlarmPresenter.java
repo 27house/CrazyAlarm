@@ -34,7 +34,7 @@ public class AlarmPresenter extends BasePresenter implements AlarmContract.Prese
 			@Override
 			public void onNext(VoiceListResp voiceListResp) {
 				if (view instanceof AlarmContract.RingtoneView){
-					((AlarmContract.RingtoneView)view).returnRingtones(voiceListResp.getResult() == 0, voiceListResp.getDatas());
+					((AlarmContract.RingtoneView)view).returnRingtones(voiceListResp.getResult() == 0, voiceListResp.getList());
 				}
 				view.showTip(voiceListResp.getMessage());
 			}
@@ -57,7 +57,7 @@ public class AlarmPresenter extends BasePresenter implements AlarmContract.Prese
 			@Override
 			public void  onNext(TaskListResp resp){
 				if (view instanceof AlarmContract.TaskView){
-					((AlarmContract.TaskView)view).returnTaskList(resp.getResult() == 0, resp.getDatas());
+					((AlarmContract.TaskView)view).returnTaskList(resp.getResult() == 0, resp.getList());
 				}
 				view.showTip(resp.getMessage());
 			}

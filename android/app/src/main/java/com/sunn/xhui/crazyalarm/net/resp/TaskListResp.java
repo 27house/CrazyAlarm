@@ -6,13 +6,13 @@ import java.util.List;
 
 public class TaskListResp extends BaseResp {
 
-	private List<AlarmGame> datas;
+	private List<AlarmGame> list;
 
-	public List<AlarmGame> getDatas() {
-		return datas;
+	public List<AlarmGame> getList() {
+		return list;
 	}
 
-	public void setDatas(List<AlarmGame> datas) {
-		this.datas = datas;
+	public void setList(List<AlarmGame> list) {
+		this.list = list;
 	}
 }

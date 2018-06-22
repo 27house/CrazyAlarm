@@ -95,4 +95,23 @@ public class Comment implements Serializable {
 	}
 
 
+	private UserInfo followUser;
+
+	public UserInfo getFollowUser() {
+		return followUser;
+	}
+
+	public void setFollowUser(UserInfo followUser) {
+		this.followUser = followUser;
+	}
+
+	private int subCount;
+
+	public int getSubCount() {
+		return subCount;
+	}
+
+	public void setSubCount(int subCount) {
+		this.subCount = subCount;
+	}
 }

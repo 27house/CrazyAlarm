@@ -4,7 +4,6 @@ public class Constant {
 
     public static final String KEY_RESULT = "result";
     public static final String KEY_MESSAGE = "message";
-    public static final String KEY_DATA = "data";
     public static final String KEY_LIST = "list";
 
     public static final int SUCCESS = 0;
