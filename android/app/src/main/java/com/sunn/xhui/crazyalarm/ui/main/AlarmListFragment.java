@@ -18,7 +18,6 @@ import com.sunn.xhui.crazyalarm.db.DatabaseHelper;
 import com.sunn.xhui.crazyalarm.ui.BaseFragment;
 import com.sunn.xhui.crazyalarm.ui.adapter.AlarmListAdapter;
 import com.sunn.xhui.crazyalarm.ui.alarm.AddAlarmActivity;
-import com.sunn.xhui.crazyalarm.ui.alarm.WebGameActivity;
 import com.sunn.xhui.crazyalarm.ui.garden.SettingsActivity;
 import com.sunn.xhui.crazyalarm.utils.AlarmUtils;
 import com.sunn.xhui.crazyalarm.utils.LogUtil;
@@ -65,8 +64,7 @@ public class AlarmListFragment extends BaseFragment implements Toolbar.OnMenuIte
 		fab.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-//				startActivity(new Intent(activity, AddAlarmActivity.class));
-				startActivity(new Intent(activity, WebGameActivity.class));
+				startActivity(new Intent(activity, AddAlarmActivity.class));
 			}
 		});
 		alarmListAdapter = new AlarmListAdapter(activity);

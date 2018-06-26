@@ -2,6 +2,19 @@ var width = window.innerWidth;
 var height = window.innerHeight * 80 / 100;
 document.getElementById("canvas").width = width;
 document.getElementById("canvas").height = height;
+/**
+ * @return {string}
+ */
+function GetQueryString(name) {
+	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+	var r = window.location.search.substr(1).match(reg);
+	if(r != null) {
+		return unescape(r[2]);
+	}
+	return null;
+}
+var successScore = GetQueryString("score");
+var scoreInt;
 var score;
 var game = {
 	canvas: document.getElementById("canvas"),
@@ -100,7 +113,8 @@ game.score = {
 		//ctx.strokeRect(0, 0, 150, 200);
 		ctx.font = "18px 微软雅黑";
 		ctx.fillStyle = "#fefefe";
-		ctx.fillText("得分:  " + (this.basic * 5 + this.star1 * 8 + this.star2 * 10 + this.boom * 20), 0, 30);
+		scoreInt = this.basic * 5 + this.star1 * 8 + this.star2 * 10 + this.boom * 20;
+		ctx.fillText("得分:  " + scoreInt, 0, 30);
 		ctx.stroke();
 		ctx.restore();
 	},
@@ -363,6 +377,11 @@ game.map = {
 			me.setBubble(currentCell.x, currentCell.y, color);
 			i--;
 		}, 50);
+		if(scoreInt >= successScore) {
+			// 完成任务
+			window.android.returnResult(score >= successScore);
+			window.android.showFinishAlert();
+		}
 	},
 	search: function(x1, y1, x2, y2) {
 		var history = [];

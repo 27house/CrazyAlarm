@@ -81,7 +81,9 @@ public class AlarmRingActivity extends AppCompatActivity {
 
 	public void stop(View view) {
 		if (alarm.getAlarmGame() != null || alarm.getAlarmGame().getId() == 0) {
-			startActivity(new Intent(this, WebGameActivity.class));
+			Intent intent = new Intent(this, WebGameActivity.class);
+			intent.putExtra(WebGameActivity.EXTRA_TASK, alarm.getAlarmGame());
+			startActivity(intent);
 		}
 		Intent intent = new Intent(this, AlarmReceiver.class);
 		PendingIntent pi = PendingIntent.getBroadcast(this, alarm.getId(), intent, 0);

@@ -263,7 +263,9 @@ public class DBService {
                 bean.setId(rs.getInt("id"));
                 bean.setName(rs.getString("name"));
                 bean.setType(rs.getInt("type"));
+                bean.setScore(rs.getInt("score"));
                 bean.setRules(rs.getString("rules"));
+                bean.setH_url(rs.getString("h_url"));
                 list.add(bean);
             }
             // 完成后关闭

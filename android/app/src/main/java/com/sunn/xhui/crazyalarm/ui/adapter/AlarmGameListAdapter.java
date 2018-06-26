@@ -104,10 +104,12 @@ public class AlarmGameListAdapter extends BaseRecycleAdapter {
 				tvTitle.setTextColor(ContextCompat.getColor(context, R.color.gray_33));
 				ivIcon.setVisibility(View.GONE);
 			}
-			btnVoice.setOnClickListener(new View.OnClickListener() {
+			btnVoice.setOnProgressButtonClickListener(new ProgressButton.OnProgressButtonClickListener() {
 				@Override
-				public void onClick(View v) {
-					context.startActivity(new Intent(context, WebGameActivity.class));
+				public void onClickListener() {
+					Intent intent = new Intent(context, WebGameActivity.class);
+					intent.putExtra(WebGameActivity.EXTRA_TASK, game);
+					context.startActivity(intent);
 				}
 			});
 

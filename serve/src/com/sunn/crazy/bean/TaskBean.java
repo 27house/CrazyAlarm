@@ -37,4 +37,23 @@ public class TaskBean {
     public void setName(String name) {
         this.name = name;
     }
+
+    private String h_url;
+    private int score;
+
+    public String getH_url() {
+        return h_url;
+    }
+
+    public void setH_url(String h_url) {
+        this.h_url = h_url;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
 }

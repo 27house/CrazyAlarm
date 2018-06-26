@@ -1,7 +1,5 @@
 package com.sunn.xhui.crazyalarm.ui.alarm;
 
-import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -11,14 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.webkit.JavascriptInterface;
-import android.webkit.ValueCallback;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Toast;
 
 import com.sunn.xhui.crazyalarm.R;
-import com.sunn.xhui.crazyalarm.utils.LogUtil;
+import com.sunn.xhui.crazyalarm.data.AlarmGame;
+import com.sunn.xhui.crazyalarm.event.JsInterface;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,7 +27,7 @@ import butterknife.ButterKnife;
  * created at 2018/5/24 0024  14:21
  */
 public class WebGameActivity extends AppCompatActivity {
-	public static final String EXTRA_SCORE = "EXTRA_SCORE";
+	public static final String EXTRA_TASK = "EXTRA_TASK";
 
 	@BindView(R.id.toolbar)
 	Toolbar toolbar;
@@ -38,6 +35,7 @@ public class WebGameActivity extends AppCompatActivity {
 	AppBarLayout appBar;
 	@BindView(R.id.webView)
 	WebView webView;
+	String url;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,16 +44,18 @@ public class WebGameActivity extends AppCompatActivity {
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 //		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-
 		setContentView(R.layout.activity_web_game);
 		ButterKnife.bind(this);
 		appBar.setVisibility(View.GONE);
-
 		setWebSetting();
-		int score = getIntent().getIntExtra(EXTRA_SCORE, 0);
-		score = 50;
-//		webView.loadUrl("http://192.168.0.136:8080/crazy/htmlgame/index.html?score=" + score);
-		webView.loadUrl("http://192.168.0.136:8080/crazy/htmlgame/gcolor.html?score=" + score);
+		AlarmGame alarmGame = (AlarmGame) getIntent().getSerializableExtra(EXTRA_TASK);
+		if (alarmGame == null) {
+			finish();
+			return;
+		}
+		int score = alarmGame.getScore();
+		url = alarmGame.getH_url() + "?score=" + score;
+		webView.loadUrl(url);
 	}
 
 	private void setWebSetting() {
@@ -85,7 +85,7 @@ public class WebGameActivity extends AppCompatActivity {
 		webSettings.setJavaScriptCanOpenWindowsAutomatically(true); //支持通过JS打开新窗口
 		webSettings.setLoadsImagesAutomatically(true); //支持自动加载图片
 		webSettings.setDefaultTextEncodingName("utf-8");//设置编码格式
-		webView.addJavascriptInterface(new JsInterface(), "android");
+		webView.addJavascriptInterface(new JsInterface(webView, this, url), "android");
 	}
 
 	@Override
@@ -129,18 +129,5 @@ public class WebGameActivity extends AppCompatActivity {
 		return super.onKeyUp(keyCode, event);
 	}
 
-	public class JsInterface {
-		@JavascriptInterface
-		public void returnResult(boolean success) {
-			gameSuccess = success;
-			LogUtil.e("---success---" + success);
-		}
-
-		@JavascriptInterface
-		public void finishGame() {
-			finish();
-		}
-	}
-
-	boolean gameSuccess;
+	public boolean gameSuccess;
 }

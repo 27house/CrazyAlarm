@@ -1,0 +1,11 @@
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+.div_header {
+	width: 100%;
+	height: auto;
+	background-image: url(../img/bg_header.jpg);
+	background-size: 100% 100%;
+}
