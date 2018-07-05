@@ -3,18 +3,7 @@
 var width = window.innerWidth;
 var height = window.innerHeight;
 
-/**
- * @return {string}
- */
-function GetQueryString(name) {
-    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-    var r = window.location.search.substr(1).match(reg);
-    if (r != null) {
-        return unescape(r[2]);
-    }
-    return null;
-}
-var successScore = GetQueryString("score");
+var successScore = Get("score");
 // 创建游戏实例
 var game = new Phaser.Game(width, height, Phaser.AUTO, '#game');
 

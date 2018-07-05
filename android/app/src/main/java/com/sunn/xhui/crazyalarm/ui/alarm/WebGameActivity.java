@@ -27,7 +27,7 @@ import butterknife.ButterKnife;
  * created at 2018/5/24 0024  14:21
  */
 public class WebGameActivity extends AppCompatActivity {
-	public static final String EXTRA_TASK = "EXTRA_TASK";
+	public static final String EXTRA_URL = "EXTRA_URL";
 
 	@BindView(R.id.toolbar)
 	Toolbar toolbar;
@@ -48,13 +48,7 @@ public class WebGameActivity extends AppCompatActivity {
 		ButterKnife.bind(this);
 		appBar.setVisibility(View.GONE);
 		setWebSetting();
-		AlarmGame alarmGame = (AlarmGame) getIntent().getSerializableExtra(EXTRA_TASK);
-		if (alarmGame == null) {
-			finish();
-			return;
-		}
-		int score = alarmGame.getScore();
-		url = alarmGame.getH_url() + "?score=" + score;
+		url = getIntent().getStringExtra(EXTRA_URL);
 		webView.loadUrl(url);
 	}
 

@@ -942,4 +942,153 @@ public class DBService {
         }
         return count;
     }
+
+    public int getUserIntegral(long id) {
+        int integral = 0;
+        // 执行 SQL 查询
+        Statement stmt = null;
+        try {
+            stmt = conn.createStatement();
+            String sql;
+
+            sql = "SELECT * FROM integral WHERE userId = " + id + " LIMIT 1";
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                // 通过字段检索
+                integral = rs.getInt("i_integral");
+            }
+
+            // 完成后关闭
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // 最后是用于关闭资源的块
+            try {
+                if (stmt != null)
+                    stmt.close();
+            } catch (SQLException se2) {
+                se2.printStackTrace();
+            }
+            try {
+                if (conn != null)
+                    conn.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+        return integral;
+    }
+
+    public List<String> getSignDates(long id, String year, String month) {
+        List<String> list = new ArrayList<>();
+        // 执行 SQL 查询
+        Statement stmt = null;
+        try {
+            stmt = conn.createStatement();
+            String sql;
+
+            sql = "SELECT * FROM sign_date WHERE userId = " + id + " and s_year = " + year + " and s_month = " + month;
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                // 通过字段检索
+                int y = rs.getInt("s_year");
+                int m = rs.getInt("s_month");
+                int d = rs.getInt("s_day");
+                String date = "" + y + (m < 10 ? "0" + m : m) + (d < 10 ? "0" + d : d);
+                list.add(date);
+            }
+            // 完成后关闭
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // 最后是用于关闭资源的块
+            try {
+                if (stmt != null)
+                    stmt.close();
+            } catch (SQLException se2) {
+                se2.printStackTrace();
+            }
+            try {
+                if (conn != null)
+                    conn.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+        return list;
+    }
+
+    public boolean signIn(long id, String year, String month, String day, String status) {
+        // 执行 SQL 查询
+        Statement stmt = null;
+        boolean rs;
+        try {
+            stmt = conn.createStatement();
+            String sql = "insert into sign_date (userId, s_year, s_month, s_day, status) values ('"
+                    + id + "', '" + year + "', '" + month + "', '" + day + "', '" + status + "')";
+            stmt.executeUpdate(sql);
+            rs = true;
+            // 完成后关闭
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            rs = false;
+        } finally {
+            // 最后是用于关闭资源的块
+            try {
+                if (stmt != null)
+                    stmt.close();
+            } catch (SQLException se2) {
+                se2.printStackTrace();
+            }
+            try {
+                if (conn != null)
+                    conn.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+        return rs;
+    }
+
+    public boolean updateIntegral(long userId, int integral) {
+        // 执行 SQL 查询
+        Statement stmt = null;
+        boolean rs;
+        try {
+            stmt = conn.createStatement();
+            String sql = "update integral set i_integral = '" + integral + "' where userId = " + userId;
+            System.out.println(sql);
+            stmt.executeUpdate(sql);
+            rs = true;
+            // 完成后关闭
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            rs = false;
+        } finally {
+            // 最后是用于关闭资源的块
+            try {
+                if (stmt != null)
+                    stmt.close();
+            } catch (SQLException se2) {
+                se2.printStackTrace();
+            }
+            try {
+                if (conn != null)
+                    conn.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+        return rs;
+    }
 }

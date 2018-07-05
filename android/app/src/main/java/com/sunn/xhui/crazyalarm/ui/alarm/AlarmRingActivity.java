@@ -82,7 +82,8 @@ public class AlarmRingActivity extends AppCompatActivity {
 	public void stop(View view) {
 		if (alarm.getAlarmGame() != null || alarm.getAlarmGame().getId() == 0) {
 			Intent intent = new Intent(this, WebGameActivity.class);
-			intent.putExtra(WebGameActivity.EXTRA_TASK, alarm.getAlarmGame());
+			String url = alarm.getAlarmGame().getH_url() + "?score=" + alarm.getAlarmGame().getScore();
+			intent.putExtra(WebGameActivity.EXTRA_URL, url);
 			startActivity(intent);
 		}
 		Intent intent = new Intent(this, AlarmReceiver.class);

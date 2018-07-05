@@ -26,9 +26,9 @@
             android:layout_below="@+id/iv_header"
             android:layout_centerHorizontal="true"
             android:layout_marginStart="20dp"
+            android:drawablePadding="5dp"
             android:gravity="center"
             android:text=""
-            android:drawablePadding="5dp"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -44,15 +44,33 @@
             android:textSize="13sp" />
     </RelativeLayout>
 
+    <TextView
+        android:id="@+id/ll_integral"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/rl_header_bg"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_label"
+        android:drawableEnd="@drawable/ic_action_go"
+        android:drawablePadding="5dp"
+        android:drawableStart="@mipmap/ic_sign"
+        android:gravity="center_vertical"
+        android:paddingEnd="10dp"
+        android:paddingStart="20dp"
+        android:text="签到领取积分"
+        android:textColor="@color/gray_66"
+        android:textSize="13sp" />
 
     <TextView
         android:id="@+id/ll_clear_cache"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@+id/rl_header_bg"
-        android:layout_marginTop="30dp"
+        android:layout_below="@+id/ll_integral"
+        android:layout_marginTop="20dp"
         android:background="@drawable/bg_label"
         android:drawableEnd="@drawable/ic_action_go"
+        android:drawablePadding="5dp"
+        android:drawableStart="@mipmap/ic_clear_cache"
         android:gravity="center_vertical"
         android:paddingEnd="10dp"
         android:paddingStart="20dp"
@@ -65,9 +83,10 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_below="@+id/ll_clear_cache"
-        android:layout_marginTop="10dp"
         android:background="@drawable/bg_label"
         android:drawableEnd="@drawable/ic_action_go"
+        android:drawablePadding="5dp"
+        android:drawableStart="@mipmap/ic_setting_min"
         android:gravity="center_vertical"
         android:paddingEnd="10dp"
         android:paddingStart="20dp"

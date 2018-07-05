@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>积分商城</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
+		<link rel="stylesheet" href="css/integralmall.css" />
+		<link rel="stylesheet" href="css/calendar.css">
+		<script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery/jquery-1.4.min.js"></script>
+		<script src="js/config.js"></script>
+	</head>
+
+	<body>
+		<!-- 签到日历对话框  -->
+		<div id='box_bg' class="box_bg">
+			<div class="box_dialog">
+				<div id="calendar" class="calendar"></div>
+				<button id='btn_cal_sign' class="btn_cal_sign">签到+10</button>
+
+			</div>
+			<img id="img_close" class="box_close" src="img/close.png" />
+		</div>
+		<!-- 积分值、签到日历 -->
+		<div>
+			<div class="div_header_l">
+				<p class="p_header_l_1"><strong>我的积分</strong></p>
+				<p id='integral' class="p_header_l_2">0</p>
+			</div>
+			<div class="div_header_r">
+				<button id='btn_sign' class="button_header">签到</button>
+			</div>
+		</div>
+		<!-- 积分兑换商品列表  -->
+		<p id="result"></p>
+		<script src="js/IntegralMall.js"></script>
+		<script src="js/calendar.js"></script>
+	</body>
+
+</html>

@@ -16,6 +16,7 @@ import com.sunn.xhui.crazyalarm.R;
 import com.sunn.xhui.crazyalarm.data.UserInfo;
 import com.sunn.xhui.crazyalarm.mpv.contract.UserContract;
 import com.sunn.xhui.crazyalarm.mpv.presenter.UserPresenter;
+import com.sunn.xhui.crazyalarm.ui.alarm.WebGameActivity;
 import com.sunn.xhui.crazyalarm.ui.garden.EditInfoActivity;
 import com.sunn.xhui.crazyalarm.ui.garden.LoginActivity;
 import com.sunn.xhui.crazyalarm.ui.BaseFragment;
@@ -130,6 +131,14 @@ public class GardenFragment extends BaseFragment implements UserContract.UserVie
 					}
 				})
 				.create().show();
+	}
+
+	@OnClick(R.id.ll_integral)
+	public void clickIntegral(View view) {
+		Intent intent = new Intent(activity, WebAppActivity.class);
+		String url ="http://192.168.0.136:8080/crazy/htmlapp/IntegralMall.html?account=" + AlarmApp.getAccount();
+		intent.putExtra(WebAppActivity.EXTRA_URL, url);
+		startActivity(intent);
 	}
 
 	@OnClick(R.id.ll_setting)

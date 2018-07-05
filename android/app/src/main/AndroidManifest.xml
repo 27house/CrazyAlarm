@@ -48,6 +48,9 @@
             android:name=".ui.alarm.WebGameActivity"
             android:theme="@style/AppTheme" />
         <activity
+            android:name=".ui.main.WebAppActivity"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name=".ui.garden.LoginActivity"
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme" />
